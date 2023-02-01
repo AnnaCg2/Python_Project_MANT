@@ -1,7 +1,7 @@
 from fun import *
 from raster_hsi import HSIRaster, Raster
 from time import perf_counter
-
+from fuzzlogic import*
 
 def combine_hsi_rasters(raster_list, method="geometric_mean"):
     """
@@ -64,15 +64,21 @@ def get_hsi_raster(tif_dir, hsi_curve):
 @cache
 def main():
     # get HSI curves as pandas DataFrames nested in a dictionary
-    hsi_curve = get_hsi_curve(fish_file, life_stage=life_stage, parameters=parameters)
+    if method == "hsi":
+        print("hsi")
+        hsi_curve = get_hsi_curve(fish_file, life_stage=life_stage, parameters=parameters)
 
-    # create HSI rasters for all parameters considered and store the Raster objects in a dictionary
-    eco_rasters = {}
-    for par in parameters:
-        hsi_par_curve = [list(hsi_curve[par][par_dict[par]]),
-                         list(hsi_curve[par]["HSI"])]
-        eco_rasters.update({par: get_hsi_raster(tif_dir=tifs[par], hsi_curve=hsi_par_curve)})
-        eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
+        # create HSI rasters for all parameters considered and store the Raster objects in a dictionary
+        eco_rasters = {}
+        for par in parameters:
+            hsi_par_curve = [list(hsi_curve[par][par_dict[par]]),
+                             list(hsi_curve[par]["HSI"])]
+            eco_rasters.update({par: get_hsi_raster(tif_dir=tifs[par], hsi_curve=hsi_par_curve)})
+            eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
+    elif method == "fuzzy_logic":
+        print("fuzzy_logic")
+    else:
+        print("no method selected")
 
     # get and save chsi raster
     chsi_raster = combine_hsi_rasters(raster_list=list(eco_rasters.values()),
@@ -83,6 +89,10 @@ if __name__ == '__main__':
     # define global variables for the main() function
     parameters = ["velocity", "depth"]
     life_stage = "juvenile"  # either "fry", "juvenile", "adult", or "spawning"
+    #method="hsi" #fuzzy_logic or hsi
+    method= "fuzzy_logic"
+
+    # paths
     fish_file = os.path.abspath("") + "\\habitat\\trout.json"
     tifs = {"velocity": os.path.abspath("") + "\\basement\\flow_velocity.tif",
             "depth": os.path.abspath("") + "\\basement\\water_depth.tif"}
