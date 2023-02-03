@@ -12,7 +12,9 @@ class HSIRaster(Raster):
         :param band: INT of the band number to use
         """
         Raster.__init__(self, file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
+
         self.make_hsi(hsi_curve)
+
 
     def make_hsi(self, hsi_curve):
         """

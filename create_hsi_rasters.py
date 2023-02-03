@@ -1,8 +1,7 @@
 from fun import *
 from raster_hsi import HSIRaster, Raster
 from time import perf_counter
-from fuzzlogic import*
-
+from raster_values import*
 def combine_hsi_rasters(raster_list, method="geometric_mean"):
     """
     Combine HSI rasters into combined Habitat Suitability Index (cHSI) Rasters
@@ -10,7 +9,7 @@ def combine_hsi_rasters(raster_list, method="geometric_mean"):
     :param method: string (default="geometric_mean", alt="product)
     :return HSIRaster: contains float pixel values
     """
-    if method is "geometric_mean":
+    if method == "geometric_mean":
         power = 1.0 / float(raster_list.__len__())
     else:
         # supposedly method is "product"
@@ -59,6 +58,12 @@ def get_hsi_raster(tif_dir, hsi_curve):
     :return hsi_raster: Raster with HSI values
     """
     return HSIRaster(tif_dir, hsi_curve)
+def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzz_paramters):
+
+
+    return ValuesRaster(tif_dir1,tif_dir2,fuzz_paramters )
+
+
 
 @log_actions
 @cache
@@ -77,6 +82,10 @@ def main():
             eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
     elif method == "fuzzy_logic":
         print("fuzzy_logic")
+        eco_rasters = {}
+        eco_rasters.update({"fuzz_hsi":ValuesRaster (tifs["velocity"],tifs["depth"],fuzzy_parameters)})
+        eco_rasters[par].save(hsi_output_dir + "hsi_fuzzy.tif" )
+
     else:
         print("no method selected")
 
@@ -97,6 +106,7 @@ if __name__ == '__main__':
     tifs = {"velocity": os.path.abspath("") + "\\basement\\flow_velocity.tif",
             "depth": os.path.abspath("") + "\\basement\\water_depth.tif"}
     hsi_output_dir = os.path.abspath("") + "\\habitat\\"
+    fuzzy_parameters=[0,0,5],[0, 5, 10],[5,10,10]
 
 
     # run code and evaluate performance
