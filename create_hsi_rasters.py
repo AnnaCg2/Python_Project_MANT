@@ -84,7 +84,7 @@ def main():
         print("fuzzy_logic")
         eco_rasters = {}
         eco_rasters.update({"fuzz_hsi":ValuesRaster (tifs["velocity"],tifs["depth"],fuzzy_parameters)})
-        eco_rasters[par].save(hsi_output_dir + "hsi_fuzzy.tif" )
+        eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif" )
 
     else:
         print("no method selected")
