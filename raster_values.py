@@ -18,18 +18,22 @@ class ValuesRaster(Raster):
         vel=raster1.array
         raster2=Raster(file_name=file_name2, band=band, raster_array=raster_array, geo_info=geo_info)
 
+
         depth=raster2.array
         #print(depth.shape[0],depth.shape[1])
-        fuzz_array=np.zeros((depth.shape[0],depth.shape[1]))
+
+        self.make_hsi(vel,depth,parameters)
 
 
-        for x in range(depth.shape[0]) :
-            Percent=x/depth.shape[0]
+
+    def make_hsi(self, vel,depth,parameters):
+        fuzz_array = np.zeros((depth.shape[0], depth.shape[1]))
+
+        for x in range(depth.shape[0]):
+            Percent = x / depth.shape[0]
             for y in range(depth.shape[1]):
+                fuzz_array[x, y] = fuzzylogic(parameters, vel[x, y], depth[x, y])
+                print(vel[x, y], depth[x, y])
+                print(fuzz_array[x, y], "habitat", Percent)
 
-                fuzz_array[x,y] = fuzzylogic(parameters,vel[x,y],depth[x,y])
-                print(vel[x,y],depth[x,y])
-                print(fuzz_array[x,y],"habitat",Percent)
-        return raster1._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
-
-
+        return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
