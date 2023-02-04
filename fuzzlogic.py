@@ -4,29 +4,7 @@ import matplotlib.pyplot as plt
 
 
 # Genera
-
-
-def fuzzylogic(parameters,velocity_value,depth_value):
-    velocity = np.arange(0, 11, 1)
-    depth = np.arange(0, 11, 1)
-    x_habitat = np.arange(0, 1.05, .05)
-
-
-    # Generate fuzzy membership functions
-    #add import capabilities from json
-
-    velocity_lo = fuzz.trimf(velocity, parameters[0])
-    velocity_md = fuzz.trimf(velocity, parameters[1])
-    velocity_hi = fuzz.trimf(velocity, parameters[2])
-
-    depth_lo = fuzz.trimf(depth, [0, 0, 5])
-    depth_md = fuzz.trimf(depth, [0, 5, 10])
-    depth_hi = fuzz.trimf(depth, [5, 10, 10])
-
-    habitat_lo = fuzz.trimf(x_habitat, [0, 0, .5])
-    habitat_md = fuzz.trimf(x_habitat, [.3, .5, .8])
-    habitat_hi = fuzz.trimf(x_habitat, [.7, 1, 1])
-
+def plotfuzzylogic()
     # # Visualize these universes and membership functions
     # fig, (ax0, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 9))
     #
@@ -57,34 +35,6 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     #
     # plt.tight_layout()
 
-
-    # We need the activation of our fuzzy membership functions at these values.
-    # The exact values velocity_value and 9.8 do not exist on our universes...
-    # This is what fuzz.interp_membership exists for!
-    velocity_level_lo = fuzz.interp_membership(velocity, velocity_lo, velocity_value)
-    velocity_level_md = fuzz.interp_membership(velocity, velocity_md, velocity_value)
-    velocity_level_hi = fuzz.interp_membership(velocity, velocity_hi, velocity_value)
-
-    depth_level_lo = fuzz.interp_membership(depth, depth_lo, depth_value)
-    depth_level_md = fuzz.interp_membership(depth, depth_md, depth_value)
-    depth_level_hi = fuzz.interp_membership(depth, depth_hi, depth_value)
-
-    # Now we take our rules and apply them. Rule 1 concerns bad food OR depthice.
-    # The OR operator means we take the maximum of these two.
-    active_rule1 = np.fmax(velocity_level_lo, depth_level_lo)
-
-    # Now we apply this by clipping the top off the corresponding output
-    # membership function with `np.fmin`
-    habitat_activation_lo = np.fmin(active_rule1, habitat_lo)  # removed entirely to 0
-
-    # For rule 2 we connect acceptable depthice to medium habitatping
-    habitat_activation_md = np.fmin(depth_level_md, habitat_md)
-
-    # For rule 3 we connect high depthice OR high food with high habitatping
-    active_rule3 = np.fmax(velocity_level_hi, depth_level_hi)
-    habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-    habitat0 = np.zeros_like(x_habitat)
-
     # Visualize this
     # fig, ax0 = plt.subplots(figsize=(8, 3))
     #
@@ -104,13 +54,6 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     #     ax.get_yaxis().tick_left()
     #
     # plt.tight_layout()
-    # Aggregate all three output membership functions together
-    aggregated = np.fmax(habitat_activation_lo,
-                         np.fmax(habitat_activation_md, habitat_activation_hi))
-
-    # Calculate defuzzified result
-    habitat = fuzz.defuzz(x_habitat, aggregated, 'centroid')
-    habitat_activation = fuzz.interp_membership(x_habitat, aggregated, habitat)  # for plot
 
     # # Visualize this
     # fig, ax0 = plt.subplots(figsize=(8, 3))
@@ -133,4 +76,71 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     #
     # plt.show()
     # print(habitat)
-    return habitat
+    pass
+def fuzzylogic(parameters,velocity_value,depth_value):
+
+    # a range of parameters (needs updating with parameter input)
+    velocity = np.arange(0, 11, 1) #add parameter input
+    depth = np.arange(0, 11, 1) #add parameter input
+    x_habitat = np.arange(0, 1.05, .05) #add parameter input
+
+
+    # Generate fuzzy membership functions
+
+    #add import capabilities from json
+
+    velocity_lo = fuzz.trimf(velocity, parameters[0]) #update parameter input
+    velocity_md = fuzz.trimf(velocity, parameters[1]) #update parameter input
+    velocity_hi = fuzz.trimf(velocity, parameters[2]) #update parameter input
+
+    depth_lo = fuzz.trimf(depth, [0, 0, 5]) #add parameter input
+    depth_md = fuzz.trimf(depth, [0, 5, 10]) #add parameter input
+    depth_hi = fuzz.trimf(depth, [5, 10, 10]) #add parameter input
+
+    habitat_lo = fuzz.trimf(x_habitat, [0, 0, .5]) #add parameter input
+    habitat_md = fuzz.trimf(x_habitat, [.3, .5, .8]) #add parameter input
+    habitat_hi = fuzz.trimf(x_habitat, [.7, 1, 1]) #add parameter input
+
+
+
+
+    # We need the activation of our fuzzy membership functions at these values.
+    # The exact values velocity_value and 9.8 do not exist on our universes...
+    # This is what fuzz.interp_membership exists for!
+    velocity_level_lo = fuzz.interp_membership(velocity, velocity_lo, velocity_value)
+    velocity_level_md = fuzz.interp_membership(velocity, velocity_md, velocity_value)
+    velocity_level_hi = fuzz.interp_membership(velocity, velocity_hi, velocity_value)
+
+    depth_level_lo = fuzz.interp_membership(depth, depth_lo, depth_value)
+    depth_level_md = fuzz.interp_membership(depth, depth_md, depth_value)
+    depth_level_hi = fuzz.interp_membership(depth, depth_hi, depth_value)
+
+    # Now we take our rules and apply them. Rule 1 concerns bad food OR depthice.
+    # The OR operator means we take the maximum of these two.
+
+    # rules ( need updating with class)
+    active_rule1 = np.fmax(velocity_level_lo, depth_level_lo)
+
+    # Now we apply this by clipping the top off the corresponding output
+    # membership function with `np.fmin`
+    habitat_activation_lo = np.fmin(active_rule1, habitat_lo)  # removed entirely to 0
+
+    # For rule 2 we connect acceptable depthice to medium habitatping
+    habitat_activation_md = np.fmin(depth_level_md, habitat_md)
+
+    # For rule 3 we connect high depthice OR high food with high habitatping
+    active_rule3 = np.fmax(velocity_level_hi, depth_level_hi)
+    habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
+    habitat0 = np.zeros_like(x_habitat)
+
+
+    # Aggregate all three output membership functions together
+    aggregated = np.fmax(habitat_activation_lo,
+                         np.fmax(habitat_activation_md, habitat_activation_hi))
+
+    # Calculate defuzzified result
+    habitat = fuzz.defuzz(x_habitat, aggregated, 'centroid')
+    habitat_activation = fuzz.interp_membership(x_habitat, aggregated, habitat)  # for plot
+
+
+    return habitat #returns habitat hsi value

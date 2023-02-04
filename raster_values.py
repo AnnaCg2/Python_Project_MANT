@@ -27,12 +27,12 @@ class ValuesRaster(Raster):
 
 
     def make_hsi(self, vel,depth,parameters):
-        self.array = np.zeros((depth.shape[0], depth.shape[1]))
+        self.array = np.zeros((depth.shape[0], depth.shape[1])) #creates a zeroes array for the required size array
 
-        for x in range(depth.shape[0]):
+        for x in range(depth.shape[0]): #loops over rows
         # for x in range(2): #for testing
-            Percent = x / depth.shape[0]
-            for y in range(depth.shape[1]):
+            Percent = (x / depth.shape[0])
+            for y in range(depth.shape[1]): #loops over col
                 self.array[x, y] = fuzzylogic(parameters, vel[x, y], depth[x, y])
                 print(vel[x, y], depth[x, y])
                 print(self.array[x, y], "habitat", Percent)
