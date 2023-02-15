@@ -1,10 +1,13 @@
 import numpy as np
 import skfuzzy as fuzz
+import pandas as pd
+import json
+from fun import *
 import matplotlib.pyplot as plt
 
 
 # Genera
-def plotfuzzylogic()
+def plotfuzzylogic():
     # # Visualize these universes and membership functions
     # fig, (ax0, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 9))
     #
@@ -77,7 +80,56 @@ def plotfuzzylogic()
     # plt.show()
     # print(habitat)
     pass
-def fuzzylogic(parameters,velocity_value,depth_value):
+
+# excel_data_df = pd.read_excel('shape_parameters.xlsx', index_col=0)
+# print(excel_data_df)
+# print(type(excel_data_df["low_L"]["Velocity"]))
+# json_shape_parameter = excel_data_df.to_dict()
+# #print(json_shape_parameter["low_L"]["Velocity"])
+# print(json_shape_parameter)
+# print(json_shape_parameter["low_L"])
+#json_shape_parameter.close
+
+
+#create json file
+
+#ZIP METHOD
+# # shape_parameters = ["velocity", {"lo": [0,0,5], "med": [0,5,10], "high": [5,10,10], }
+# # shape_parameters_depth = {"lo": [0,0,5], "med": [0,5,10], "high": [5,10,10]}
+# # shape_parameters_hsi = {"low": [0,0,5], "med": [0,5,10], "high": [0,5,10]}
+# shape_parameter_keys = ["velocity_lo", "velocity_med", "velocity_high", "depth_lo", "depth_med", "depth_high", "hsi_lo", "hsi_med", "hsi_high"]
+# shape_parameter_values = [[0,0,5], [0,5,10], [5,10,10], [0,0,5], [0,5,10], [5,10,10], [0,0,5], [0,5,10], [5,10,10]]
+# shape_parameters = dict(zip(shape_parameter_keys, shape_parameter_values))
+# print(shape_parameters)
+
+#written dictionary method
+# data_for_json = ["velocity", {"lo": [int(0),int(0),int(5)], "med": [0,5,10], "hi": [5,10,10]}, "depth", {"lo": [0,0,5], "med": [0,5,10], "hi": [5,10,10]}, "HSI", {"lo": [0,0,5], "med": [0,5,10], "hi": [5,10,10]}]
+# json_file = open("shape_parameters.json", mode="w+")
+# json_file.write(json.dumps(data_for_json))
+# json_file.close
+#
+# triangle_shape = read_json("shape_parameters.json")
+# print(triangle_shape)
+
+
+
+
+#print(json_shape_parameters["velocity"]["low"])
+# with open("shape_parameters.json", mode = "r") as shape_params:
+#     triangle_shape = shape_params.readline()
+#
+# data_from_json = json.loads(triangle_shape)
+# print(json.dumps(data_from_json))
+
+
+#add import capabilities from json
+#file_info = read_json("shape_parameters.json")
+# with open("shape_parameters.json", mode="r") as re_opened_file:
+#     raw_data = re_opened_file.readline()
+# data_from_json = json.loads(raw_data)
+# print(json.dumps(data_from_json))
+
+def fuzzylogic(parameters,velocity_value,depth_value, life_stage):
 
     # a range of parameters (needs updating with parameter input)
     velocity = np.arange(0, 11, 1) #add parameter input
@@ -90,6 +142,8 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     #add import capabilities from json
 
     velocity_lo = fuzz.trimf(velocity, parameters[0]) #update parameter input
+    print(velocity_lo)
+    print("\n")
     velocity_md = fuzz.trimf(velocity, parameters[1]) #update parameter input
     velocity_hi = fuzz.trimf(velocity, parameters[2]) #update parameter input
 
@@ -108,6 +162,7 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     # The exact values velocity_value and 9.8 do not exist on our universes...
     # This is what fuzz.interp_membership exists for!
     velocity_level_lo = fuzz.interp_membership(velocity, velocity_lo, velocity_value)
+
     velocity_level_md = fuzz.interp_membership(velocity, velocity_md, velocity_value)
     velocity_level_hi = fuzz.interp_membership(velocity, velocity_hi, velocity_value)
 
@@ -115,28 +170,35 @@ def fuzzylogic(parameters,velocity_value,depth_value):
     depth_level_md = fuzz.interp_membership(depth, depth_md, depth_value)
     depth_level_hi = fuzz.interp_membership(depth, depth_hi, depth_value)
 
-    # Now we take our rules and apply them. Rule 1 concerns bad food OR depthice.
-    # The OR operator means we take the maximum of these two.
 
-    # rules ( need updating with class)
-    active_rule1 = np.fmax(velocity_level_lo, depth_level_lo)
+    # # Now we take our rules and apply them. Rule 1 concerns bad food OR depthice.
+    # # The OR operator means we take the maximum of these two.
+    #
+    # # rules ( need updating with class)
+    # active_rule1 = np.fmax(velocity_level_lo, depth_level_lo)
+    #
+    # # Now we apply this by clipping the top off the corresponding output
+    # # membership function with `np.fmin`
+    # habitat_activation_lo = np.fmin(active_rule1, habitat_lo)  # removed entirely to 0
+    #
+    # # For rule 2 we connect acceptable depth to medium habitat
+    # habitat_activation_md = np.fmin(depth_level_md, habitat_md)
+    #
+    # # For rule 3 we connect high depth OR high velocity with high habitatping
+    # active_rule3 = np.fmax(velocity_level_hi, depth_level_hi)
+    # habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
+    # habitat0 = np.zeros_like(x_habitat)
 
-    # Now we apply this by clipping the top off the corresponding output
-    # membership function with `np.fmin`
-    habitat_activation_lo = np.fmin(active_rule1, habitat_lo)  # removed entirely to 0
-
-    # For rule 2 we connect acceptable depthice to medium habitatping
-    habitat_activation_md = np.fmin(depth_level_md, habitat_md)
-
-    # For rule 3 we connect high depthice OR high food with high habitatping
-    active_rule3 = np.fmax(velocity_level_hi, depth_level_hi)
-    habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-    habitat0 = np.zeros_like(x_habitat)
-
+    if life_stage == "fry":
+        fry = Fry(Fish)
+        habitat_activation_lo = fry.make_lo_belonging(self,velocity_level_lo, depth_level_lo, habitat_lo)
+        habitat_activation_md = fry.make_md_belonging(self, depth_level_md, habitat_md)
+        habitat_activation_hi = fry.make_hi_belonging(self, velocity_level_hi, depth_level_hi, habitat_hi)
 
     # Aggregate all three output membership functions together
     aggregated = np.fmax(habitat_activation_lo,
                          np.fmax(habitat_activation_md, habitat_activation_hi))
+    print(aggregated)
 
     # Calculate defuzzified result
     habitat = fuzz.defuzz(x_habitat, aggregated, 'centroid')
@@ -144,3 +206,6 @@ def fuzzylogic(parameters,velocity_value,depth_value):
 
 
     return habitat #returns habitat hsi value
+
+velocity_array = [[0, 0, 5],[0, 5, 10],[5, 10, 10]]
+test = fuzzylogic(velocity_array,9.8,6.5)
