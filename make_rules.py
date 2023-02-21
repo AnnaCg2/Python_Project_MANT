@@ -2,107 +2,70 @@ from fun import *
 
 
 class Fish:
-    def __init__(self, *args, **kwargs):
-        Fish.__init__(self)
-        self.__family = ""
-        self.__species = ""
-        self.__common_name = ""
+    def __init__(self, common_name, life_stage):
+        self.common_name = common_name
+        self.life_stage = life_stage
+        # self.habitat_trimf = habitat_trimf
+        # self.fuzzy_velocity = fuzzy_velocity
+        # self.fuzzy_depth = fuzzy_depth
 
 
-    def make_lo_belonging(self, velocity_level, depth_level, habitat_lo):
-        active_rule1 = np.fmax(velocity_level, depth_level)
-        habitat_activation_lo = np.fmin(active_rule1, habitat_lo)
-        return(habitat_activation_lo)
+    def apply_rules(self, habitat_trimf, fuzzy_velocity, fuzzy_depth):
+        """
+        Defines and applies rules to create fuzzy HSI membership values
+        :param life_stage: STR with life_stage (defined by user)
+        :param habitat_trimf: pd data frame with results of skfuzz triangular membership function generator
+                        column names: "habitat_lo", "habitat_md", "habitat_hi"
+        :param fuzzy_velocity: dictionary with low, medium, and high fuzzy velocity membership
+                            dictionary keys: "lo", "md", "hi"
+        :param fuzzy_depth: dictionary with low, medium, and high fuzzy depth membership
+                            dictionary keys: "lo", "md", "hi"
+        :return: habitat_activation_lo: pandas series with fuzzy membership values for lo habitat
+                 habitat_activation_md: pandas series with fuzzy membership values for md habitat
+                 habitat_activation_hi: pandas series with fuzzy membership values for hi habitat
 
-    def make_md_belonging(self, velocity_level, depth_level, habitat_md):
-        habitat_activation_md = np.fmin(depth_level, habitat_md)
-        return(habitat_activation_md)
+        """
+        if self.life_stage == "fry":
+            active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
+            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
 
-    def make_hi_belonging(self, velocity_level, depth_level, habitat_hi):
-        active_rule3 = np.fmax(velocity_level, depth_level)
-        habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-        return(habitat_activation_hi)
+            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
 
-    def __call__(self, *args, **kwargs):
-        # example prints class structure information to console
-        print("Class Info: <type> = NewClass (%s)" % os.path.dirname(__file__))
-        print(dir(self))
 
-class Fry(Fish):
-    def __init__(self, *args, **kwargs):
+            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
 
-    def make_lo_belonging(self, velocity_level, depth_level, habitat_lo):
-        active_rule1 = np.fmax(velocity_level, depth_level)
-        habitat_activation_lo = np.fmin(active_rule1, habitat_lo)
-        return (habitat_activation_lo)
+        if self.life_stage == "juvenile":
+            active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
+            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
 
-    def make_md_belonging(self, velocity_level, depth_level, habitat_md):
-        habitat_activation_md = np.fmin(depth_level, habitat_md)
-        return (habitat_activation_md)
+            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
 
-    def make_hi_belonging(self, velocity_level, depth_level, habitat_hi):
-        active_rule3 = np.fmax(velocity_level, depth_level)
-        habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-        return (habitat_activation_hi)
+            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
 
-    def __call__(self, *args, **kwargs):
-        # example prints class structure information to console
-        print("Class Info: <type> = NewClass (%s)" % os.path.dirname(__file__))
-        print(dir(self))
+        if self.life_stage == "adult":
+            active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
+            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
 
-class Juvenile(Fish):
-    def __init__(self, *args, **kwargs):
+            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
 
-    def make_lo_belonging(self, velocity_level, depth_level, habitat_lo):
-        active_rule1 = np.fmax(velocity_level, depth_level)
-        habitat_activation_lo = np.fmin(active_rule1, habitat_lo)
-        return (habitat_activation_lo)
+            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
 
-    def make_md_belonging(self, depth_level, habitat_md):
-        habitat_activation_md = np.fmin(depth_level, habitat_md)
-        return (habitat_activation_md)
+        if self.life_stage == "spawning":
+            active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
+            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
 
-    def make_hi_belonging(self, velocity_level, depth_level, habitat_hi):
-        active_rule3 = np.fmax(velocity_level, depth_level)
-        habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-        return (habitat_activation_hi)
+            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
+
+            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
+
+        return (habitat_activation_lo, habitat_activation_md, habitat_activation_hi)
 
     def __call__(self, *args, **kwargs):
         # example prints class structure information to console
         print("Class Info: <type> = NewClass (%s)" % os.path.dirname(__file__))
         print(dir(self))
-
-class Adult(Fish):
-    def __init__(self, *args, **kwargs):
-
-    def make_lo_belonging(self, velocity_level, depth_level, habitat_lo):
-        active_rule1 = np.fmax(velocity_level, depth_level)
-        habitat_activation_lo = np.fmin(active_rule1, habitat_lo)
-        return (habitat_activation_lo)
-
-    def make_md_belonging(self, velocity_level, depth_level, habitat_md):
-        habitat_activation_md = np.fmin(depth_level, habitat_md)
-        return (habitat_activation_md)
-
-    def make_hi_belonging(self, velocity_level, depth_level, habitat_hi):
-        active_rule3 = np.fmax(velocity_level, depth_level)
-        habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-        return (habitat_activation_hi)
-
-class Spawning(Fish):
-    def __init__(self, *args, **kwargs):
-
-    def make_lo_belonging(self, velocity_level, depth_level, habitat_lo):
-        active_rule1 = np.fmax(velocity_level, depth_level)
-        habitat_activation_lo = np.fmin(active_rule1, habitat_lo)
-        return (habitat_activation_lo)
-
-    def make_md_belonging(self, velocity_level, depth_level, habitat_md):
-        habitat_activation_md = np.fmin(depth_level, habitat_md)
-        return (habitat_activation_md)
-
-    def make_hi_belonging(self, velocity_level, depth_level, habitat_hi):
-        active_rule3 = np.fmax(velocity_level, depth_level)
-        habitat_activation_hi = np.fmin(active_rule3, habitat_hi)
-        return (habitat_activation_hi)
 

@@ -95,6 +95,24 @@ def read_json(file_name):
     with open(file_name, mode="r") as file:
         return json.load(file)
 
+def txt_to_json(file_path, save_path):
+    """
+    Reads data from .txt file and loads into and saves .json file
+    :param file_path: string of the file path to the .txt file including the directory
+    :param save_path: string of the .json file name
+    """
+    with open(file_path) as file:
+        file_data = file.read()
+        txt_data = json.loads(file_data)
+
+    with open(save_path, 'w') as json_file:
+        json.dump(txt_data, json_file, indent=4)
+
+    file.close()
+    json_file.close()
+    return()
+
+
 
 def remove_directory(directory):
     """

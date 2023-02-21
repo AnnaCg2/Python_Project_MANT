@@ -61,7 +61,7 @@ def get_hsi_raster(tif_dir, hsi_curve):
 def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzz_paramters):
 
 
-    return ValuesRaster(tif_dir1,tif_dir2,fuzz_paramters )
+    return ValuesRaster(tif_dir1,tif_dir2,fuzz_paramters)
 
 
 
@@ -100,6 +100,7 @@ if __name__ == '__main__':
     life_stage = "juvenile"  # either "fry", "juvenile", "adult", or "spawning"
     #method="hsi" #fuzzy_logic or hsi
     method= "fuzzy_logic"
+    trout = Fish("Rainbow Trout", "juvenile")
 
     # paths
     fish_file = os.path.abspath("") + "\\habitat\\trout.json"
