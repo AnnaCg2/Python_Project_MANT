@@ -8,7 +8,7 @@ def cache(fun):
     #are temporarily stored in cache folder
     def wrapper(*args, **kwargs):
         check_cache()
-        fun(*args, **kwargs) #can't remember how this works
+        fun(*args, **kwargs)
         remove_directory(cache_folder) #deletes cache folder after code is run
     return wrapper
 

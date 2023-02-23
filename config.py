@@ -19,6 +19,18 @@ except ImportError:
     print("ERROR: Cannot import json package.")
 
 try:
+    import skfuzzy as fuzz
+
+except ImportError:
+    print("ERROR: Cannot import skfuzzy package")
+
+try:
+    import matplotlib.pyplot as plt
+
+except ImportError:
+    print("ERROR: Cannot import matplotlib package")
+
+try:
     from flusstools import geotools as geo
 except ImportError:
     print("ERROR: Cannot import geotools.")

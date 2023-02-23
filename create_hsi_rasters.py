@@ -58,12 +58,9 @@ def get_hsi_raster(tif_dir, hsi_curve):
     :return hsi_raster: Raster with HSI values
     """
     return HSIRaster(tif_dir, hsi_curve)
-def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzz_paramters):
+def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class):
 
-
-    return ValuesRaster(tif_dir1,tif_dir2,fuzz_paramters)
-
-
+    return ValuesRaster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class)
 
 @log_actions
 @cache
@@ -83,8 +80,8 @@ def main():
     elif method == "fuzzy_logic":
         print("fuzzy_logic")
         eco_rasters = {}
-        eco_rasters.update({"fuzz_hsi":ValuesRaster (tifs["velocity"],tifs["depth"],fuzzy_parameters)})
-        eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif" )
+        eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout)})
+        eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif")
 
     else:
         print("no method selected")
@@ -99,16 +96,16 @@ if __name__ == '__main__':
     parameters = ["velocity", "depth"]
     life_stage = "juvenile"  # either "fry", "juvenile", "adult", or "spawning"
     #method="hsi" #fuzzy_logic or hsi
-    method= "fuzzy_logic"
+    method = "fuzzy_logic"
     trout = Fish("Rainbow Trout", "juvenile")
+    fuzzy_params = get_fuzzy_params(os.path.abspath("") + "\\habitat\\fuzzy_params.txt")
+
 
     # paths
     fish_file = os.path.abspath("") + "\\habitat\\trout.json"
     tifs = {"velocity": os.path.abspath("") + "\\basement\\flow_velocity.tif",
             "depth": os.path.abspath("") + "\\basement\\water_depth.tif"}
     hsi_output_dir = os.path.abspath("") + "\\habitat\\"
-    fuzzy_parameters=[0,0,5],[0, 5, 10],[5,10,10]
-
 
     # run code and evaluate performance
     t0 = perf_counter()
