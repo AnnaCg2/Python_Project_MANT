@@ -80,7 +80,7 @@ def main():
     elif method == "fuzzy_logic":
         print("fuzzy_logic")
         eco_rasters = {}
-        eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout)})
+        eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout, plot_fuzzy=plot_fuzzy)})
         eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif")
 
     else:
@@ -99,6 +99,7 @@ if __name__ == '__main__':
     method = "fuzzy_logic"
     trout = Fish("Rainbow Trout", "juvenile")
     fuzzy_params = get_fuzzy_params(os.path.abspath("") + "\\habitat\\fuzzy_params.txt")
+    plot_fuzzy = True
 
 
     # paths

@@ -4,6 +4,86 @@ from make_rules import *
 # Genera
 
 #create json file
+
+def plot_fuzzy_logic(habitat, x_values, membership, aggregated, habitat_activation_values, habitat_activation):
+    """
+    Plots an example of the fuzzified curves for depth, velocity and HSI
+    :param fuzzy_plot: boolean value enabling or disabling the plotting function
+    """
+    # Visualize these universes and membership functions
+    habitat0 = np.zeros_like(x_values["x_habitat"])
+    fig, (ax0, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 9))
+
+
+    ax0.plot(x_values["x_velocity"], membership["velocity_membership"]["velocity_lo"], 'b', linewidth=1.5, label='low')
+    ax0.plot(x_values["x_velocity"], membership["velocity_membership"]["velocity_md"], 'g', linewidth=1.5, label='medium')
+    ax0.plot(x_values["x_velocity"], membership["velocity_membership"]["velocity_hi"], 'r', linewidth=1.5, label='high')
+    ax0.set_title('Flow Velocity')
+    ax0.legend()
+
+    ax1.plot(x_values["x_depth"], membership["depth_membership"]["depth_lo"], 'b', linewidth=1.5, label='low')
+    ax1.plot(x_values["x_depth"], membership["depth_membership"]["depth_md"], 'g', linewidth=1.5, label='medium')
+    ax1.plot(x_values["x_depth"], membership["depth_membership"]["depth_hi"], 'r', linewidth=1.5, label='high')
+    ax1.set_title('depth')
+    ax1.legend()
+
+    ax2.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'b', linewidth=1.5, label='Low')
+    ax2.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_md"], 'g', linewidth=1.5, label='Medium')
+    ax2.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_hi"], 'r', linewidth=1.5, label='High')
+    ax2.set_title('habitat amount')
+    ax2.legend()
+
+    # Turn off top/right axes
+    for ax in (ax0, ax1, ax2):
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.get_xaxis().tick_bottom()
+        ax.get_yaxis().tick_left()
+
+    plt.tight_layout()
+
+    #Visualize this
+    fig, ax0 = plt.subplots(figsize=(8, 3))
+
+    ax0.fill_between(x_values["x_habitat"], habitat0, habitat_activation_values["habitat_activation_lo"], facecolor='b', alpha=0.7)
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'b', linewidth=0.5, linestyle='--', )
+    ax0.fill_between(x_values["x_habitat"], habitat0, habitat_activation_values["habitat_activation_md"], facecolor='g', alpha=0.7)
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'g', linewidth=0.5, linestyle='--')
+    ax0.fill_between(x_values["x_habitat"], habitat0, habitat_activation_values["habitat_activation_hi"], facecolor='r', alpha=0.7)
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'r', linewidth=0.5, linestyle='--')
+    ax0.set_title('Output membership activity')
+
+    # Turn off top/right axes
+    for ax in (ax0,):
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.get_xaxis().tick_bottom()
+        ax.get_yaxis().tick_left()
+
+    plt.tight_layout()
+
+    # Visualize this
+    fig, ax0 = plt.subplots(figsize=(8, 3))
+
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'b', linewidth=0.5, linestyle='--', )
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'g', linewidth=0.5, linestyle='--')
+    ax0.plot(x_values["x_habitat"], membership["habitat_membership"]["habitat_lo"], 'r', linewidth=0.5, linestyle='--')
+    ax0.fill_between(x_values["x_habitat"], habitat0, aggregated, facecolor='Orange', alpha=0.7)
+    ax0.plot([habitat, habitat], [0, habitat_activation], 'k', linewidth=1.5, alpha=0.9)
+    ax0.set_title('Aggregated membership and result (line)')
+
+    # Turn off top/right axes
+    for ax in (ax0,):
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.get_xaxis().tick_bottom()
+        ax.get_yaxis().tick_left()
+
+    plt.tight_layout()
+
+    plt.show()
+    return(fig)
+
 def get_fuzzy_params(file_path):
 
     # Generate fuzzy membership functions
@@ -19,6 +99,7 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     x_velocity = np.asarray(fuzzy_parameters["velocity"]["x_axis"], dtype=np.float32)
     x_depth = np.asarray(fuzzy_parameters["depth"]["x_axis"], dtype=np.float32)
     x_habitat = np.asarray(fuzzy_parameters["habitat"]["x_axis"], dtype=np.float32)
+    x_values = {"x_velocity": x_velocity, "x_depth": x_depth, "x_habitat": x_habitat}
 
     #create custom membership functions for velocity, depth, and habitat
     velocity_membership = pd.DataFrame(columns=['velocity_lo', 'velocity_md', 'velocity_hi'])
@@ -35,6 +116,8 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     habitat_membership["habitat_lo"] = fuzz.trimf(x_habitat, fuzzy_parameters["habitat"]["lo"]) #add parameter input
     habitat_membership["habitat_md"] = fuzz.trimf(x_habitat, fuzzy_parameters["habitat"]["md"]) #add parameter input
     habitat_membership["habitat_hi"] = fuzz.trimf(x_habitat, fuzzy_parameters["habitat"]["hi"]) #add parameter input
+
+    membership = {"velocity_membership": velocity_membership, "depth_membership": depth_membership, "habitat_membership": habitat_membership}
 
 
 
@@ -55,6 +138,8 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     (habitat_activation_lo, habitat_activation_md, habitat_activation_hi) = fish_class.apply_rules\
         (habitat_trimf=habitat_membership, fuzzy_velocity=fuzzy_velocity_dict, fuzzy_depth=fuzzy_depth_dict)
 
+    habitat_activation_values = {"habitat_activation_lo": habitat_activation_lo, "habitat_activation_md": habitat_activation_md, "habitat_activation_hi": habitat_activation_hi}
+
     # Aggregate all three output membership functions together
     aggregated = np.fmax(habitat_activation_lo, habitat_activation_md, habitat_activation_hi)
 
@@ -62,90 +147,14 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     habitat = fuzz.defuzz(x_habitat, aggregated, 'centroid')
     habitat_activation = fuzz.interp_membership(x_habitat, aggregated, habitat)  # for plot
 
-
-    return habitat #returns habitat hsi value
+    return (habitat, x_values, membership, aggregated, habitat_activation_values, habitat_activation) #returns habitat hsi value
+#x_habitat, velocity_membership, depth_membership, habitat_membership
 
 # file_path = os.path.abspath("") + "\\habitat\\shape_params.txt"
 # fuzzy_parameters = get_fuzzy_params(os.path.abspath("") + "\\habitat\\shape_params.txt")
-# trout = Fish("Rainbow Trout","juvenile")
+# trout = Fish("Rainbow Trout","adult")
 # velocity_array = [[0, 0, 5],[0, 5, 10],[5, 10, 10]]
-# test = fuzzylogic(fuzzy_parameters,9.8,6.5, trout)
+# fuzzy_plot = True
+# test = fuzzylogic(fuzzy_parameters,9.8,6.5, trout, fuzzy_plot)
 
 
-# def plot_fuzzy_logic(fuzzy_plot,velocity_membership, depth_membership, habitat_membership, habitat):
-#     """
-#     Plots an example of the fuzzified curves for depth, velocity and HSI
-#     :param fuzzy_plot: boolean value enabling or disabling the plotting function
-#     """
-#     # Visualize these universes and membership functions
-#     fig, (ax0, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 9))
-#
-#     ax0.plot(velocity, velocity_membership["velocity_lo"], 'b', linewidth=1.5, label='low')
-#     ax0.plot(velocity, velocity_membership["velocity_md"], 'g', linewidth=1.5, label='medium')
-#     ax0.plot(velocity, velocity_membership["velocity_hi"], 'r', linewidth=1.5, label='high')
-#     ax0.set_title('Flow Velocity')
-#     ax0.legend()
-#
-#     ax1.plot(depth, depth_memberhsip["depth_lo"], 'b', linewidth=1.5, label='low')
-#     ax1.plot(depth, depth_membership["depth_md"], 'g', linewidth=1.5, label='medium')
-#     ax1.plot(depth, depth_membership["depth_hi"], 'r', linewidth=1.5, label='high')
-#     ax1.set_title('depth velocity')
-#     ax1.legend()
-#
-#     ax2.plot(x_habitat, habitat_membership["habitat_lo"], 'b', linewidth=1.5, label='Low')
-#     ax2.plot(x_habitat, habitat_membership["habitat_md"], 'g', linewidth=1.5, label='Medium')
-#     ax2.plot(x_habitat, habitat_membership["habitat_hi"], 'r', linewidth=1.5, label='High')
-#     ax2.set_title('habitat amount')
-#     ax2.legend()
-#
-#     # Turn off top/right axes
-#     for ax in (ax0, ax1, ax2):
-#         ax.spines['top'].set_visible(False)
-#         ax.spines['right'].set_visible(False)
-#         ax.get_xaxis().tick_bottom()
-#         ax.get_yaxis().tick_left()
-#
-#     plt.tight_layout()
-#
-#     #Visualize this
-#     fig, ax0 = plt.subplots(figsize=(8, 3))
-#
-#     ax0.fill_between(x_habitat, habitat0, habitat_activation_lo, facecolor='b', alpha=0.7)
-#     ax0.plot(x_habitat, habitat_lo, 'b', linewidth=0.5, linestyle='--', )
-#     ax0.fill_between(x_habitat, habitat0, habitat_activation_md, facecolor='g', alpha=0.7)
-#     ax0.plot(x_habitat, habitat_md, 'g', linewidth=0.5, linestyle='--')
-#     ax0.fill_between(x_habitat, habitat0, habitat_activation_hi, facecolor='r', alpha=0.7)
-#     ax0.plot(x_habitat, habitat_hi, 'r', linewidth=0.5, linestyle='--')
-#     ax0.set_title('Output membership activity')
-#
-#     # Turn off top/right axes
-#     for ax in (ax0,):
-#         ax.spines['top'].set_visible(False)
-#         ax.spines['right'].set_visible(False)
-#         ax.get_xaxis().tick_bottom()
-#         ax.get_yaxis().tick_left()
-#
-#     plt.tight_layout()
-#
-#     # Visualize this
-#     fig, ax0 = plt.subplots(figsize=(8, 3))
-#
-#     ax0.plot(x_habitat, habitat_lo, 'b', linewidth=0.5, linestyle='--', )
-#     ax0.plot(x_habitat, habitat_md, 'g', linewidth=0.5, linestyle='--')
-#     ax0.plot(x_habitat, habitat_hi, 'r', linewidth=0.5, linestyle='--')
-#     ax0.fill_between(x_habitat, habitat0, aggregated, facecolor='Orange', alpha=0.7)
-#     ax0.plot([habitat, habitat], [0, habitat_activation], 'k', linewidth=1.5, alpha=0.9)
-#     ax0.set_title('Aggregated membership and result (line)')
-#
-#     # Turn off top/right axes
-#     for ax in (ax0,):
-#         ax.spines['top'].set_visible(False)
-#         ax.spines['right'].set_visible(False)
-#         ax.get_xaxis().tick_bottom()
-#         ax.get_yaxis().tick_left()
-#
-#     plt.tight_layout()
-#
-#     plt.show()
-#     print(habitat)
-#     pass

@@ -37,20 +37,21 @@ class Fish:
 
         if self.life_stage == "juvenile":
             active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
-            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
+            habitat_activation_lo = np.fmax(active_rule1, habitat_trimf["habitat_lo"])
 
-            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
+            habitat_activation_md = np.fmax(fuzzy_depth["md"], habitat_trimf["habitat_md"])
 
-            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            active_rule3 = np.fmin(fuzzy_velocity["hi"], fuzzy_depth["hi"])
             habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
 
         if self.life_stage == "adult":
-            active_rule1 = np.fmax(fuzzy_velocity["lo"], fuzzy_depth["lo"])
-            habitat_activation_lo = np.fmin(active_rule1, habitat_trimf["habitat_lo"])
+            active_rule1 = np.fmin(fuzzy_velocity["lo"], fuzzy_depth["hi"])
+            habitat_activation_lo = np.fmax(active_rule1, habitat_trimf["habitat_lo"])
 
-            habitat_activation_md = np.fmin(fuzzy_depth["md"], habitat_trimf["habitat_md"])
+            active_rule2 = np.fmax(fuzzy_velocity["md"], fuzzy_depth["md"])
+            habitat_activation_md = np.fmax(active_rule2, habitat_trimf["habitat_md"])
 
-            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["hi"])
+            active_rule3 = np.fmax(fuzzy_velocity["hi"], fuzzy_depth["lo"])
             habitat_activation_hi = np.fmin(active_rule3, habitat_trimf["habitat_hi"])
 
         if self.life_stage == "spawning":
