@@ -115,19 +115,16 @@ def create_membership_functions(fuzzy_parameters):
 
 def fuzzylogic(velocity_value,depth_value, fish_class, membership, x_values):
     #Activation of our fuzzy membership functions at these values. Saved in the end in dictionaries
-    param="lo"
+    param=["lo","md","hi"]
+    fuzzy_velocity_dict={}
+    fuzzy_depth_dict={}
+    for par in param:
+        fuzzy_velocity_dict.update({par:fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_"+par],
+                                               velocity_value) })
+        fuzzy_depth_dict.update({par:fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_"+par],
+                                               depth_value) })
 
 
-    velocity_level_lo = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_lo"],
-                                               velocity_value)
-    velocity_level_md = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_md"], velocity_value)
-    velocity_level_hi = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_hi"], velocity_value)
-    fuzzy_velocity_dict = {"lo": velocity_level_lo, "md": velocity_level_md, "hi": velocity_level_hi}
-
-    depth_level_lo = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_lo"], depth_value)
-    depth_level_md = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_md"], depth_value)
-    depth_level_hi = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_hi"], depth_value)
-    fuzzy_depth_dict = {"lo": depth_level_lo, "md": depth_level_md,"hi": depth_level_hi}
 
     (habitat_activation_lo, habitat_activation_md, habitat_activation_hi) = fish_class.apply_rules\
         (habitat_trimf=membership["habitat_membership"], fuzzy_velocity=fuzzy_velocity_dict, fuzzy_depth=fuzzy_depth_dict)

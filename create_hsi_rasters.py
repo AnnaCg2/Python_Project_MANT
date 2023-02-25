@@ -95,7 +95,7 @@ if __name__ == '__main__':
     # define global variables for the main() function
     parameters = ["velocity", "depth"]
     life_stage = "juvenile"  # either "fry", "juvenile", "adult", or "spawning"
-    #method="hsi" #fuzzy_logic or hsi
+    # method="hsi" #fuzzy_logic or hsi
     method = "fuzzy_logic"
     trout = Fish("Rainbow Trout", "adult")
     fuzzy_params = get_fuzzy_params(os.path.abspath("") + "\\habitat\\fuzzy_params.txt")
