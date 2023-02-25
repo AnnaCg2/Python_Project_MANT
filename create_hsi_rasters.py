@@ -45,6 +45,7 @@ def get_hsi_curve(json_file, life_stage, parameters):
                     logging.warning("Invalid HSI curve entry for {0} in parameter {1}.".format(life_stage, par))
         # add the nested parameter pair list as pandas DataFrame to the curve_data dictionary
         curve_data.update({par: pd.DataFrame(par_pairs, columns=[par_dict[par], "HSI"])}) #contains pandas dataframes for velocity and depth
+        print(curve_data)
     return curve_data
 
 
