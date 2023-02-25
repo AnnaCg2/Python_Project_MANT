@@ -1,6 +1,6 @@
 from __future__ import annotations
 from fun import *
-#imports the functions written in fun.py script and config.py script
+
 
 class Raster: #loads any GeoTIFF file as a geo-referenced array object that can be used with mathematical operators
     def __init__(self, file_name, band=1, raster_array=None, epsg=4326, geo_info=False):
@@ -42,7 +42,7 @@ class Raster: #loads any GeoTIFF file as a geo-referenced array object that can 
         # THIS IS AN EXAMPLE TO IMPLEMENT THE USAGE OF THE / OPERATOR BETWEEN TWO RASTER OBJECTS
 
         try:
-            self.array = np.divide(self.array, constant_or_raster.array) #raster instance that has an array attribute table or numeric constant (e.g. 9.81)
+            self.array = np.divide(self.array, constant_or_raster.array)
         except AttributeError:
             self.array /= constant_or_raster
         return self._make_raster("div")
@@ -114,15 +114,13 @@ class Raster: #loads any GeoTIFF file as a geo-referenced array object that can 
         """
         file_markers are string variables used in the magic methods
         """
-        #file marker is string variable added to GeoTIFF file name along with the random # (for _truediv_ file_marker = "div")
-        f_ending = "__{0}{1}__.tif".format(file_marker, create_random_string(4))  #ending of the file_route
+        f_ending = "__{0}{1}__.tif".format(file_marker, create_random_string(4))
 
         geo.create_raster(cache_folder + self.name + f_ending, self.array, epsg=self.epsg,
                           nan_val=nan_value,
-                          geo_info=self.geo_transformation) #not sure what geo_info = self.geo_transformation
+                          geo_info=self.geo_transformation)
         return Raster(cache_folder + self.name + f_ending)
-        #end with file name like "C:\Exercise-geco\_cache_\velocity_divhjev_.tif"
-        #method returns a new raster instance of the temporary cached geoTIFF file
+
 
     def save(self, file_name=str(os.path.abspath("") + "\\00_%s.tif" % create_random_string(7))):
         """

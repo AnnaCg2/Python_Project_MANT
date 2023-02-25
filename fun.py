@@ -4,16 +4,14 @@ from bisect import bisect_left
 
 
 def cache(fun):
-    #wrapper for parent functions to enforce that intermediate geospatial datasets (e.g. product of a sum of rasters)
-    #are temporarily stored in cache folder
     def wrapper(*args, **kwargs):
         check_cache()
         fun(*args, **kwargs)
-        remove_directory(cache_folder) #deletes cache folder after code is run
+        remove_directory(cache_folder)
     return wrapper
 
 
-def check_cache(): #automatically called by cache wrapper. Confirms existence of cache file
+def check_cache():
     try:
         os.makedirs(cache_folder)
     except OSError:
@@ -76,8 +74,7 @@ def interpolate_y(x1, x2, y1, y2, xi):
         return nan_value
 
 
-def log_actions(fun): #wraps a function (fun), where actions should be written to a logfile.
-    #I guess it's just so that you can put in a function and it will perform logging?
+def log_actions(fun):
     def wrapper(*args, **kwargs):
         start_logging()
         fun(*args, **kwargs)

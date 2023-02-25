@@ -1,17 +1,68 @@
-### Python Programming for Water Resources Engineering and Research
+# Implementation of Fuzzy Logic in Habitat Suitability Analysis
 
-![fish](https://github.com/Ecohydraulics/media/raw/master/jpg/yuba-fish.jpg)
+![fish](https://github.com/Ecohydraulics/media/raw//jpg/yuba-fish.jpg)
 *<sub>Sacramento suckers in the South Yuba River (source: Sebastian Schwindt 2019).</sub>*
 
 ***
 
-## Exercise: Create a habitat suitability map
+## Introduction:
+> This project is an extension of Exercise 5 from the Hydro-Informatics textbook (Schwindt & Barros, 2007). Throughout 
+> stages of their life, aquatic animals, including fish, require different habitat conditions in order to thrive. 
+> These habitat conditions include hydraulic parameters such as water depth and flow velocity. Based on these factors a 
+> Habitat Suitability Index (HSI) describing the quality of habitat can be defined. HSI values can be calculated using 
+> a deterministic approach (as seen in Exercise 5) or a fuzzy logic approach.
+> The goal of this project was to create a tool to calculate potential habitat areas for Rainbow Trout in the BLANK 
+> river using a fuzzy logic approach. The quality of fuzzy logic analysis is heavily dependent on the expert knowledge 
+> used to define fuzzification rules. Fine-tuning of the rules by a fish biologist or other related specialist would 
+> improve the quality of the results of this project.
+>>*Note: This README.md file contains descriptions of all functions written or altered by the MANT team. To find 
+> additional information about the scripts created for the Habitat Suitability Exercise and called here (but not edited by our team) please visit the Hydro-Informatics textbook at
+> https://hydro-informatics.com/exercises/ex-geco.html
+## Requirements
+
+### Libraries
+Libraries used: os, logging, random, shutil, string, numpy, pandas, json, skuzzy, matplotlib.pyplot, geotools
+
+### Input Data
+
+The following data must be and is provided to run the code:
+
+1. The basement folder
+   - flow_velocity.tif
+   - water_depth.tif
+
+
+2. The habitat Folder
+   - trout.json
+   - fuzzy_params.txt
+
+## Code Diagram
+
+## Code Description
+
+> ### config.py
+> All libraries and global variables that are needed are loaded here. 
+
+> ### fun.py
+
+> ### make_rules.py
+> File where the Fish class is stored. This class contains the fuzzy rules used to determine the relationship between the
+> input variables (velocity and depth) and the output variable (HSI value).
+> #### \_\_init\_\_()
+> Magic method assigns values to the class attributes when a new object is initiated.
+> 
+
+
+
 
 >	***Background***: Water depth and flow velocity rasters can be produced with two-dimensional (2D) hydrodynamic numerical models. In combination, both water depth and flow velocity are hydraulic key drivers of the physical habitat suitability for target fish species at different life stages.
 
 >   ***Goals***: This exercise guides through the creation of rasters (`osgeo.gdal.Dataset`), the usage of georeferences, raster array calculations, as well as the conversion of a raster to a polygon shapefile and modifications to the shapefile's *Attribute Table* to calculate usable (physical) habitat area. For this purpose, a `Raster` class is written, which enables mathematical operations between its instances through the implementation of magic methods. The exercise also shows how the course's [*geo_utils* package](https://github.com/hydro-informatics/geo-utils) can be used to leverage complex challenges in just a few lines of code.
 
 >   ***Requirements***: *Python* libraries: *numpy*, *pandas*, *gdal*, *geopandas*, *alphashape*, *shapely*, and *json*. Understand how [object orientation](https://hydro-informatics.github.io/hypy_classes.html) works as well as [geospatial data and analyses with *Python*](https://hydro-informatics.github.io/geo-python.html).
+
+
+
 
 Get ready by cloning the exercise repository:
 
