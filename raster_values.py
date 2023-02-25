@@ -13,13 +13,21 @@ class ValuesRaster(Raster):
                     [HSI-values] must have the same length.
         :param band: INT of the band number to use
         """
+        try:
+            raster1=Raster(file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
+            raster2 = Raster(file_name=file_name2, band=band, raster_array=raster_array, geo_info=geo_info)
+        except:
+            logging.error("ERROR:Velocity or Depth tiff missing, incorrect format,name, or used in other program")
 
-        raster1=Raster(file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
+
         vel=raster1.array
-        raster2=Raster(file_name=file_name2, band=band, raster_array=raster_array, geo_info=geo_info)
         depth=raster2.array
         Raster.__init__(self, file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
 
+        if depth.shape[0] != vel.shape[0]:
+            logging.error("ERROR:Rows not equal dimension depth is {0} vel is {1}".format(depth.shape[0],vel.shape[0]))
+        if depth.shape[1] != vel.shape[1]:
+            logging.error("ERROR:Columns not equal dimension depth is {0} vel is {1}".format(depth.shape[1], vel.shape[1]))
 
         self.make_hsi(vel,depth, fuzzy_parameters, fish_class, plot_fuzzy_example)
 
@@ -49,8 +57,6 @@ class ValuesRaster(Raster):
             if percent_new > percent_old:
                 percent_old=percent_new
                 print( percent_old,"% complete")
-        if plot_fuzzy_example:
-            fig = plot_fuzzy(x_values, membership)
 
 
         return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values

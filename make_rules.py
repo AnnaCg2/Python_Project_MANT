@@ -78,8 +78,5 @@ class Fish:
 
         return (habitat_activation_lo, habitat_activation_md, habitat_activation_hi)
 
-    def __call__(self, *args, **kwargs):
-        # example prints class structure information to console
-        print("Class Info: <type> = NewClass (%s)" % os.path.dirname(__file__))
-        print(dir(self))
+
 

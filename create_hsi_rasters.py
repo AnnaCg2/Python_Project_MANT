@@ -2,7 +2,7 @@ from fun import *
 from raster_hsi import HSIRaster, Raster
 from time import perf_counter
 from raster_values import*
-def combine_hsi_rasters(raster_list, method="geometric_mean"):
+def combine_hsi_rasters(raster_list, method="product"):
     """
     Combine HSI rasters into combined Habitat Suitability Index (cHSI) Rasters
     :param raster_list: list of HSIRasters (HSI)
@@ -66,30 +66,37 @@ def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class):
 @cache
 def main():
     # get HSI curves as pandas DataFrames nested in a dictionary
-    if method == "hsi":
-        print("hsi")
-        hsi_curve = get_hsi_curve(fish_file, life_stage=life_stage, parameters=parameters)
+    logging.info("Using method of {}".format(method))
+    try:
+        if method == "hsi":
 
-        # create HSI rasters for all parameters considered and store the Raster objects in a dictionary
-        eco_rasters = {}
-        for par in parameters:
-            hsi_par_curve = [list(hsi_curve[par][par_dict[par]]),
-                             list(hsi_curve[par]["HSI"])]
-            eco_rasters.update({par: get_hsi_raster(tif_dir=tifs[par], hsi_curve=hsi_par_curve)})
-            eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
-    elif method == "fuzzy_logic":
-        print("fuzzy_logic")
-        eco_rasters = {}
-        eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout, plot_fuzzy_example=plot_fuzzy_example)})
-        eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif")
+            hsi_curve = get_hsi_curve(fish_file, life_stage=life_stage, parameters=parameters)
 
-    else:
-        print("no method selected")
+            # create HSI rasters for all parameters considered and store the Raster objects in a dictionary
+            eco_rasters = {}
+            for par in parameters:
+                hsi_par_curve = [list(hsi_curve[par][par_dict[par]]),
+                                 list(hsi_curve[par]["HSI"])]
+                eco_rasters.update({par: get_hsi_raster(tif_dir=tifs[par], hsi_curve=hsi_par_curve)})
+                eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
+        elif method == "fuzzy_logic":
 
-    # get and save chsi raster
-    chsi_raster = combine_hsi_rasters(raster_list=list(eco_rasters.values()),
-                                      method="geometric_mean")
-    chsi_raster.save(hsi_output_dir + "chsi.tif")
+            eco_rasters = {}
+            eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout, plot_fuzzy_example=plot_fuzzy_example)})
+            eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif")
+
+            # plot fuzzy logic
+            if plot_fuzzy_example:
+                membership, x_values = create_membership_functions(fuzzy_params)
+                fig = plot_fuzzy(x_values, membership)
+            # get and save chsi raster
+        chsi_raster = combine_hsi_rasters(raster_list=list(eco_rasters.values()),
+                                          method="geometric_mean")
+        chsi_raster.save(hsi_output_dir + "chsi.tif")
+    except:
+        logging.error("{} is not valid method".format(method))
+
+
 
 if __name__ == '__main__':
     # define global variables for the main() function
@@ -97,7 +104,7 @@ if __name__ == '__main__':
     life_stage = "juvenile"  # either "fry", "juvenile", "adult", or "spawning"
     # method="hsi" #fuzzy_logic or hsi
     method = "fuzzy_logic"
-    trout = Fish("Rainbow Trout", "adult")
+    trout = Fish("Rainbow Trout", life_stage)
     fuzzy_params = get_fuzzy_params(os.path.abspath("") + "\\habitat\\fuzzy_params.txt")
     plot_fuzzy_example = True
 
