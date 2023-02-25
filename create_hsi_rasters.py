@@ -64,7 +64,7 @@ def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class):
 
 @log_actions
 @cache
-def main():
+def main(method,fish_file, tifs, hsi_output_dir, fuzzy_params,trout,parameters,life_stage):
     # get HSI curves as pandas DataFrames nested in a dictionary
     logging.info("Using method of {}".format(method))
     try:
@@ -117,6 +117,6 @@ if __name__ == '__main__':
 
     # run code and evaluate performance
     t0 = perf_counter()
-    main()
+    main(method,fish_file, tifs, hsi_output_dir, fuzzy_params,trout,parameters,life_stage)
     t1 = perf_counter()
     print("Time elapsed: " + str(t1 - t0))
