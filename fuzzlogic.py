@@ -85,9 +85,9 @@ def get_fuzzy_params(file_path):
 
 def create_membership_functions(fuzzy_parameters):
     # must save x-axis values as a np array before passing into fuzz.trimf
-    x_velocity = np.asarray(fuzzy_parameters["velocity"]["x_axis"], dtype=np.float32)
-    x_depth = np.asarray(fuzzy_parameters["depth"]["x_axis"], dtype=np.float32)
-    x_habitat = np.asarray(fuzzy_parameters["habitat"]["x_axis"], dtype=np.float32)
+    x_velocity = np.asarray(fuzzy_parameters["velocity"]["x_axis"], dtype=np.float16)
+    x_depth = np.asarray(fuzzy_parameters["depth"]["x_axis"], dtype=np.float16)
+    x_habitat = np.asarray(fuzzy_parameters["habitat"]["x_axis"], dtype=np.float16)
     x_values = {"x_velocity": x_velocity, "x_depth": x_depth, "x_habitat": x_habitat}
 
     # create custom membership functions for velocity, depth, and habitat
@@ -113,11 +113,13 @@ def create_membership_functions(fuzzy_parameters):
                   "habitat_membership": habitat_membership}
     return(membership,x_values)
 
-def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
-
-    (membership, x_values) = create_membership_functions(fuzzy_parameters)
+def fuzzylogic(velocity_value,depth_value, fish_class, membership, x_values):
     #Activation of our fuzzy membership functions at these values. Saved in the end in dictionaries
-    velocity_level_lo = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_lo"], velocity_value)
+    param="lo"
+
+
+    velocity_level_lo = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_lo"],
+                                               velocity_value)
     velocity_level_md = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_md"], velocity_value)
     velocity_level_hi = fuzz.interp_membership(x_values["x_velocity"], membership["velocity_membership"]["velocity_hi"], velocity_value)
     fuzzy_velocity_dict = {"lo": velocity_level_lo, "md": velocity_level_md, "hi": velocity_level_hi}
@@ -125,8 +127,7 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     depth_level_lo = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_lo"], depth_value)
     depth_level_md = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_md"], depth_value)
     depth_level_hi = fuzz.interp_membership(x_values["x_depth"], membership["depth_membership"]["depth_hi"], depth_value)
-    fuzzy_depth_dict = {"lo": depth_level_lo, "md": depth_level_md,
-                           "hi": depth_level_hi}
+    fuzzy_depth_dict = {"lo": depth_level_lo, "md": depth_level_md,"hi": depth_level_hi}
 
     (habitat_activation_lo, habitat_activation_md, habitat_activation_hi) = fish_class.apply_rules\
         (habitat_trimf=membership["habitat_membership"], fuzzy_velocity=fuzzy_velocity_dict, fuzzy_depth=fuzzy_depth_dict)
@@ -140,7 +141,7 @@ def fuzzylogic(fuzzy_parameters,velocity_value,depth_value, fish_class):
     habitat = fuzz.defuzz(x_values["x_habitat"], aggregated, 'centroid')
     habitat_activation = fuzz.interp_membership(x_values["x_habitat"], aggregated, habitat)  # for plot
 
-    return (habitat, x_values, membership, aggregated, habitat_activation_values, habitat_activation) #returns habitat hsi value
+    return (habitat) #returns habitat hsi value
 #x_habitat, velocity_membership, depth_membership, habitat_membership
 
 

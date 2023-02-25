@@ -2,9 +2,9 @@ from fun import *
 
 
 class Fish:
-    # def __init__(self, common_name, life_stage):
-    #     self.common_name = common_name
-    #     self.life_stage = life_stage
+    def __init__(self, common_name, life_stage):
+        self.common_name = common_name
+        self.life_stage = life_stage
     #
     # def check_life_stage(self, func):
     #     def wrapper(*args, **kwargs):
@@ -14,7 +14,6 @@ class Fish:
     #             print("ERROR: Life stage must be set as fry, juvenile, adult, or spawning")
     #     return wrapper
 
-    @check_life_stage
     def make_fuzzy_rules(self, fuzzy_velocity, fuzzy_depth):
         """
         Defines and applies rules to create fuzzy HSI membership values
@@ -54,7 +53,6 @@ class Fish:
 
         return (active_rule1, active_rule2, active_rule3)
 
-    @check_life_stage
     def apply_rules(self, habitat_trimf, fuzzy_velocity, fuzzy_depth):
 
         (active_rule1, active_rule2, active_rule3) = self.make_fuzzy_rules(fuzzy_velocity, fuzzy_depth)

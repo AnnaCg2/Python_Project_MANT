@@ -39,4 +39,4 @@ cache_folder = os.path.abspath("") + "\\__cache__\\"
 par_dict = {"velocity": "u",
             "depth": "h",
             "grain_size": "d"}
-nan_value = 0.0
+nan_value = 0

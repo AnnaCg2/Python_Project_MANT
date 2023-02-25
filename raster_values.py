@@ -18,7 +18,6 @@ class ValuesRaster(Raster):
         vel=raster1.array
         raster2=Raster(file_name=file_name2, band=band, raster_array=raster_array, geo_info=geo_info)
         depth=raster2.array
-        #print(depth.shape[0],depth.shape[1])
         Raster.__init__(self, file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
 
 
@@ -28,20 +27,30 @@ class ValuesRaster(Raster):
 
     def make_hsi(self, vel,depth,fuzzy_parameters, fish_class, plot_fuzzy_example):
         self.array = np.zeros((depth.shape[0], depth.shape[1])) #creates a zeroes array for the required size array
+        (membership, x_values) = create_membership_functions(fuzzy_parameters)
+        percent_old=0
 
-        #for x in range(depth.shape[0]): #loops over rows
-        for x in range(2): #for testing
-            Percent = (x / depth.shape[0])
+        for x in range(depth.shape[0]): #loops over rows
+
+
+            percent_new = int(x*100 / depth.shape[0])
             for y in range(depth.shape[1]): #loops over col
-                (self.array[x, y], x_values, membership, aggregated, habitat_activation_values, habitat_activation) = fuzzylogic(fuzzy_parameters, vel[x, y], depth[x, y], fish_class)
-                print(vel[x, y], depth[x, y])
-                print(x,y)
-                print(self.array[x, y], "habitat", Percent)
+
+                if np.isnan(depth[x,y]) == True or depth[x,y] == 0:
+                #if depth[x,y] != np.nan or depth[x,y]!= 0:
+                    self.array[x, y] = 0
+
+
+                else:
+
+                    self.array[x, y] = fuzzylogic(vel[x, y], depth[x, y], fish_class, membership, x_values)
+
+
+            if percent_new > percent_old:
+                percent_old=percent_new
+                print( percent_old,"% complete")
         if plot_fuzzy_example:
-            (habitat, x_values, membership, aggregated, habitat_activation_values,
-             habitat_activation) = fuzzylogic(fuzzy_parameters, vel[0,900], depth[0, 900], fish_class)
             fig = plot_fuzzy(x_values, membership)
-            fig2 = plot_defuzzy(habitat, x_values, membership, aggregated, habitat_activation_values, habitat_activation)
 
 
         return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
