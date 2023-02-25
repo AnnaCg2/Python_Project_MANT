@@ -44,7 +44,6 @@ class ValuesRaster(Raster):
                 else:
 
                     self.array[x, y] = fuzzylogic(vel[x, y], depth[x, y], fish_class, membership, x_values)
-                    print(self.array[x, y])
 
 
             if percent_new > percent_old:
