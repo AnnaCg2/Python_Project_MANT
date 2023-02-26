@@ -126,7 +126,7 @@ def fuzzylogic(velocity_value,depth_value, fish_class, membership, x_values):
 
 
 
-    (habitat_activation_lo, habitat_activation_md, habitat_activation_hi) = fish_class.apply_rules\
+    (habitat_activation_lo, habitat_activation_md, habitat_activation_hi) = fish_class.make_fuzzy_rules\
         (habitat_trimf=membership["habitat_membership"], fuzzy_velocity=fuzzy_velocity_dict, fuzzy_depth=fuzzy_depth_dict)
 
     habitat_activation_values = {"habitat_activation_lo": habitat_activation_lo, "habitat_activation_md": habitat_activation_md, "habitat_activation_hi": habitat_activation_hi}
@@ -138,8 +138,7 @@ def fuzzylogic(velocity_value,depth_value, fish_class, membership, x_values):
     habitat = fuzz.defuzz(x_values["x_habitat"], aggregated, 'centroid')
     habitat_activation = fuzz.interp_membership(x_values["x_habitat"], aggregated, habitat)  # for plot
 
-    return (habitat) #returns habitat hsi value
-#x_habitat, velocity_membership, depth_membership, habitat_membership
+    return (habitat, aggregated, habitat_activation_values, habitat_activation)
 
 
 

@@ -22,6 +22,7 @@ class ValuesRaster(Raster):
 
         vel=raster1.array
         depth=raster2.array
+
         Raster.__init__(self, file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
 
         if depth.shape[0] != vel.shape[0]:
@@ -51,12 +52,24 @@ class ValuesRaster(Raster):
 
                 else:
 
-                    self.array[x, y] = fuzzylogic(vel[x, y], depth[x, y], fish_class, membership, x_values)
+                    (self.array[x, y], aggregated, habitat_activation_values, habitat_activation) \
+                        = fuzzylogic(vel[x, y], depth[x, y], fish_class, membership, x_values)
 
 
             if percent_new > percent_old:
                 percent_old=percent_new
                 print( percent_old,"% complete")
 
+        if plot_fuzzy_example:
+            logging.warning("Graphs must be closed before running \"calculate_habitat_area\"")
+            membership, x_values = create_membership_functions(fuzzy_parameters)
+            (habitat, aggregated, habitat_activation_values, habitat_activation) = fuzzylogic(vel[914, 1], depth[914, 1], fish_class, membership, x_values)
+            fig = plot_fuzzy(x_values, membership)
+            fig2 = plot_defuzzy(habitat, x_values, membership, aggregated, habitat_activation_values, habitat_activation)
 
         return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
+
+
+    # def depth_vel_values(self):
+    #
+    #     return(self.vel_array[914,1],self.depth_array[914,1])
