@@ -54,7 +54,8 @@ class HsiApp(tk.Frame):
         map_button4.grid(column=2, row=6)
 
         Createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
-                                                "Fuzzy method for the selected lifestage:" \n)
+                                                "Fuzzy method for the selected lifestage: \n"
+                                                "IMPORTANT: THIS FUNCTION TAKES A LONG TIME TO RUN - CLICK BUTTONS ONCE THEN WAIT")
         Createraster_label.grid(column=1, row=7, columnspan=2)
 
         map_button5 = tk.Button(master, text="Fry-CreateRaster", command=lambda: (open_smth(life_stage="fry", method="fuzzy_logic", canvas=canvas)))
