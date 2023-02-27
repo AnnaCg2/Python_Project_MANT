@@ -1,7 +1,8 @@
-from fun import *
-from raster_hsi import HSIRaster, Raster
+from raster_hsi import HSIRaster
 from time import perf_counter
 from raster_values import*
+
+
 def combine_hsi_rasters(raster_list, method="product"):
     """
     Combine HSI rasters into combined Habitat Suitability Index (cHSI) Rasters
@@ -58,20 +59,21 @@ def get_hsi_raster(tif_dir, hsi_curve):
     :return hsi_raster: Raster with HSI values
     """
     return HSIRaster(tif_dir, hsi_curve)
-def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class):
+def get_fuzzhsi_raster( tif_dir1, tif_dir2, fuzzy_parameters, fish_class, plot_fuzzy_example):
     """
         Calculate and return fuzzy logic Habitat Suitability Index Rasters
-        :param tif_dir: string of directory and name of  a tif file with parameter values velocity
+        :param tif_dir1: string of directory and name of  a tif file with parameter values velocity
         :param tif_dir2: string of directory and name of  a tif file with parameter values depth
         :param fuzzy_parameters np.array that dictates the fuzzy parameters
         :param fish_class object of fish class
+        :plot_fuzzy_example Boolean true or false to initiate fuzz example plotting
         :return hsi_raster: Raster with HSI values
 
-        :return hsi_raster: Raster with fuzzy HSI values
+
 
         """
 
-    return ValuesRaster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class)
+    return ValuesRaster(tif_dir1,tif_dir2,fuzzy_parameters, fish_class,plot_fuzzy_example)
 
 @log_actions
 @cache
