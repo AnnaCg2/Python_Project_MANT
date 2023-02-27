@@ -66,30 +66,39 @@ This function was created partially with the help of chat gpt.
 | file_path | string | path to text file containing fuzzy parameters |
 | save_path | string | path to save .json file created from the text file |
 
-## gui.py
+## gui_raster_calculation.py
 
 #### HsiApp CLASS - AUTHOR: MURAT EGIN
 The gui.py contains a class that allows the user to show the habitat suitability of the fish for the selected lifestages.
 HsiApp class initializes the tkinter frame utilizing self, master. The layout of the buttons are positioned utilizing the grid layout options. The buttons on the top left allow the user to select a fish lifestage and output the corresponding HSI values in the Python IDE. Below the canvas, the buttons selected allow the user to select the .tiff file that they want to display based on fish lifestage and method.
 Functions utilized:
 
-### Open_smth()
+### open_smth()
 Allows the user to open the .tiff file that is generated from the option that they select via the interface. Converts the .tif file to numpy array that allows tkinter to show the image.
 
 | Input argument | Type	   | Description |
 |----------------|---------| ----|
-| Life_stage	    | String	 | User input lifestage for desired .tif creation and area calculation |
-| Method	        | String	 | User input to select method that is run that defines the created raster |
-| Canvas	        | string  | 	predefined area that receives the image that is generated from the chsi.tif |
+| life_stage	    | String	 | User input lifestage for desired .tif creation and area calculation |
+| method	        | String	 | User input to select method that is run that defines the created raster |
+| canvas	        | string  | 	predefined area that receives the image that is generated from the chsi.tif |
 
-
-## Raster_Creation()
+### raster_creation()
 Button linked function that allows the user to create a chsi.tif based on HSI method and life_stage
 
-|Input argument	| Type    |	Description |
-| --- |---------| --- |
-| life_stage | 	string |	User input lifestage for desired .tif creation and area calculation |
-| Method	| string	 | User input to select method that is run that defines the created raster |
+| Input argument	 | Type    |	Description |
+|-----------------|---------| --- |
+| life_stage      | 	string |	User input lifestage for desired .tif creation and area calculation |
+| method	         | string	 | User input to select method that is run that defines the created raster |
+
+### area_creation()
+Button linked function that allows the user to calculate area of chsi.tif that is currently displayed in the GUI
+
+| Input argument   | Type	   | Description                                                         |
+|------------------|---------|---------------------------------------------------------------------|
+| chsi_raster_name | String	 | File name and path of the .chsi.tif                                 |
+| chsi_threshold   | Float | Threshold value to decide if a value is include in area calculation |
+
+
 
 
 ## make_rules.py

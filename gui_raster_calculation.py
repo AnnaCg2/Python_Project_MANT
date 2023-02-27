@@ -3,9 +3,8 @@ from tkinter import *
 from create_hsi_rasters import *
 from PIL import ImageTk
 from PIL import Image
-import numpy as np
 from calculate_habitat_area import *
-
+import numpy as np
 
 class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
     def __init__(self, master=None):
@@ -15,9 +14,10 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
         bg = "light blue"  # Input of a background color
         self.master.configure(bg=bg)
 
-        Welcome_label = Label(master, text="Thank you for using our program \n"  # Defines welcome label
-                                           "The .tif of the habitat will display below based on which button is pressed")
-        Welcome_label.grid(column=1, row=0, columnspan=2)
+        welcome_label = Label(master, text="Thank you for using our program \n"  # Defines welcome label
+                                           "The .tif of the habitat will display below based on "
+                                           "which button is pressed")
+        welcome_label.grid(column=1, row=0, columnspan=2)
 
         # Creation of the canvas to be able to show images of the generated .tif files.
         img_size = (500, 500)  # define image size to later be displayed on a canvas.
@@ -26,9 +26,9 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
         canvas.configure(bg=bg)  # ensures background matches the background of the master window.
 
         # Creation of the buttons to show different .tif files based on lifestage and HSI method.
-        Createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
+        createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
                                                 "HSI method for the selected lifestage:")
-        Createraster_label.grid(column=1, row=4, columnspan=2, pady=10)
+        createraster_label.grid(column=1, row=4, columnspan=2, pady=10)
 
         map_button1 = tk.Button(master, text="Fry-HSI",
                                 command=lambda: (open_smth(life_stage="fry", method="hsi", canvas=canvas)))
@@ -44,11 +44,12 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
         map_button4.grid(column=2, row=6)
 
         # Creation of the buttons to show different .tif files based on lifestage and Fuzzy method.
-        Createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
+        createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
                                                 "Fuzzy method for the selected lifestage: \n"
-                                                "IMPORTANT: THIS FUNCTION TAKES A LONG TIME TO RUN - CLICK BUTTONS ONCE THEN WAIT \n"
+                                                "IMPORTANT: THIS FUNCTION TAKES A LONG TIME TO RUN - "
+                                                "CLICK BUTTONS ONCE THEN WAIT \n"
                                                 "CLOSE THE GRAPHS TO SHOW .TIF FILE")
-        Createraster_label.grid(column=1, row=7, columnspan=2, pady=10)
+        createraster_label.grid(column=1, row=7, columnspan=2, pady=10)
         map_button5 = tk.Button(master, text="Fry-FuzzyLogic",
                                 command=lambda: (open_smth(life_stage="fry", method="fuzzy_logic", canvas=canvas)))
         map_button5.grid(column=1, row=8)
@@ -63,17 +64,17 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
         map_button8.grid(column=2, row=9)
 
         # Creation of the buttons to calculate area of the shown .tif file.
-        Area_label = Label(master, text="The button below calculates suitable habitat area \n"
+        area_label = Label(master, text="The button below calculates suitable habitat area \n"
                                         "based on which option you selected above")
-        Area_label.grid(column=1, row=10, columnspan=2, pady=10)
-        Area_button1 = tk.Button(master, text="Calculate Area", command=lambda: (
-            Area_Creation(chsi_raster_name=os.path.abspath("") + "\\habitat\\chsi.tif", chsi_threshold=0.4)))
-        Area_button1.grid(column=1, row=11, columnspan=2)
+        area_label.grid(column=1, row=10, columnspan=2, pady=10)
+        area_button1 = tk.Button(master, text="Calculate Area", command=lambda: (
+            area_creation(chsi_raster_name=os.path.abspath("") + "\\habitat\\chsi.tif", chsi_threshold=0.4)))
+        area_button1.grid(column=1, row=11, columnspan=2)
 
         # Thank you message
-        Thank_youlabel = Label(master, text="Thank you for using our program\n"
+        thank_youlabel = Label(master, text="Thank you for using our program\n"
                                             "Anna, Niklas, Murat (Team MANT)")
-        Thank_youlabel.grid(column=1, row=13, columnspan=2, pady=10)
+        thank_youlabel.grid(column=1, row=13, columnspan=2, pady=10)
 
         def open_smth(life_stage, method, canvas):  # Function to open .tif images.
             '''
@@ -83,7 +84,7 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
             :return:
             '''
 
-            Raster_Creation(life_stage, method)
+            raster_creation(life_stage, method)
 
             file = os.path.abspath("") + "\\habitat\\chsi.tif"
             global my_image  # Makes my_image variable global
@@ -93,12 +94,13 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
 
             pass
 
-        def Raster_Creation(life_stage, method): #Function pulled from Create_hsi_raster.py to generate the .tif file based on button selection.
-            '''
+        def raster_creation(life_stage, method):
+            """
+            Function pulled from Create_hsi_raster.py to generate the .tif file based on button selection.
             :param life_stage: lifestage input to generate corresponding chsi.tif. selected via the different buttons.
             :param method: selected method for generation of chsi.tif.  Can select from hsi or fuzzy_logic
             :return:
-            '''
+            """
             # define global variables for the main() function
             parameters = ["velocity", "depth"]
             life_stage = life_stage
@@ -116,12 +118,13 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
             main(method, fish_file, tifs, hsi_output_dir, fuzzy_params, trout, parameters, life_stage,
                  plot_fuzzy_example)
 
-        def Area_Creation(chsi_raster_name, chsi_threshold): #Function pulled from Calculate_habitat_area to calculate the area of the displayed .tif file.
-            '''
+        def area_creation(chsi_raster_name, chsi_threshold):
+            """
+            #Function pulled from Calculate_habitat_area to calculate the area of the displayed .tif file.
             :param chsi_raster_name:  Name of the .tif that you would like to calculate area for.
             :param chsi_threshold: Threshold value utilized in Fuzzy Logic
             :return:
-            '''
+            """
             chsi_raster_name = os.path.abspath("") + "\\habitat\\chsi.tif"
             chsi_threshold = 0.4
 
