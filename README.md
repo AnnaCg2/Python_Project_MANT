@@ -19,7 +19,7 @@
 # Requirements
 
 ## Libraries
-_Python Libraries:_ geoutils, numpy, pandas, json, skfuzzy, matplotlib.pyplot, geotools
+_Python Libraries:_ geoutils, numpy, pandas, json, skfuzzy, matplotlib.pyplot, geotools, tkinter, PIL
 
 _Standard Libraries:_ os, logging, random, shutil, string
 
@@ -37,7 +37,8 @@ The following data must be and is provided to run the code:
    - fuzzy_params.txt
 
 # Code Diagram
-
+![img_2.png](img_2.png)
+![img_1.png](img_1.png)
 # Code Description
 
 ## config.py
@@ -173,7 +174,12 @@ Extract fuzzy parameter information from txt file and save as .json
 | habitat_activation_values | numpy array | Final degree of membership for graphing                                    |
 | habitat_activation | numpy array    | Final degree of membership for graphing                                    |
 
+## Auxilary Components
 
+1. Class inheritance from Raster class to RasterValues
+2. Two plotting functions enabled/disabled by boolean (plot_fuzzy and plot_defuzzy)
+3. Warning, notes, and errors logged throughout the code
+   - warning to close plots before running calculate_habitat_area
 
 
 -----------------------------------------------------------
