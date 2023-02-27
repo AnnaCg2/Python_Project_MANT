@@ -113,14 +113,13 @@ Converts GeoTiffs into np.array for velocity and depth.
 Calls make_fuzzy_hsi
 
 
-
-| Input Argument | Type | Description |
-|----------------| -- | ---- |
-| file_name      | string | velocity GeoTiff file name including directory (must end on ".tif")  |
-| file_name2     | string | depth GeoTiff file name including directory (must end on ".tif") |
-| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| Input Argument | Type         | Description |
+|----------------|--------------| -------------------------------------------------------------------------- |
+| file_name      | string       | velocity GeoTiff file name including directory (must end on ".tif")  |
+| file_name2     | string       | depth GeoTiff file name including directory (must end on ".tif") |
+| fuzzy_parameters | np.array     | inputs for fuzzy logic parameters  |
 | fish_class    | class object | rules class for specific fish |
-| plot_fuzzy_example    | Boolean | True or False if plot should be created |
+| plot_fuzzy_example    | Boolean      | True or False if plot should be created |
 
 
 ### make_fuzzy_hsi
@@ -128,28 +127,28 @@ Loops over array using values from input array variables to run fuzzy logic for 
 Calls make_fuzzy_plots if plot_fuzzy_example is True
 
 
-| Input Argument | Type | Description |
-|----------------| -- | ---- |
-| vel      | np.array | velocity values array  |
-| depth    | np.array | depth values array|
-| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| Input Argument | Type         | Description |
+|----------------|--------------| ---- |
+| vel      | np.array     | velocity values array  |
+| depth    | np.array     | depth values array|
+| fuzzy_parameters | np.array     | inputs for fuzzy logic parameters  |
 | fish_class    | class object | rules class for specific fish |
-| plot_fuzzy_example    | Boolean | True or False if plot should be created |
+| plot_fuzzy_example    | Boolean      | True or False if plot should be created |
 
 
-| Return | Type | Description                                                    |
-| -- | --- |----------------------------------------------------------------|
+| Return              | Type | Description                                                    |
+|---------------------| --- |----------------------------------------------------------------|
 | make_raster("fuzz") | raster| returns by calling make_raster with np.array habitat values    |
 
 
 ### make_fuzzy_plot
 Activates plotting of example fuzzy logic plot. Using plotting functions from fuzzylogic.py
 
-| Input Argument | Type | Description |
-|----------------| -- | ---- |
-| vel      | np.array | velocity values array  |
-| depth    | np.array | depth values array|
-| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| Input Argument | Type         | Description |
+|----------------|--------------| ---- |
+| vel      | np.array     | velocity values array  |
+| depth    | np.array     | depth values array|
+| fuzzy_parameters | np.array     | inputs for fuzzy logic parameters  |
 | fish_class    | class object | rules class for specific fish |
 
 

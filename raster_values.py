@@ -1,4 +1,3 @@
-import numpy as np
 from raster import *
 from fuzzlogic import*
 
@@ -16,6 +15,7 @@ class ValuesRaster(Raster):
         Modified template from raster_hsi to use fuzzy logic
         """
         try:
+            #initiates objects for tifs
             raster1 = Raster(file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
             raster2 = Raster(file_name=file_name2, band=band, raster_array=raster_array, geo_info=geo_info)
         except AttributeError:
@@ -26,7 +26,7 @@ class ValuesRaster(Raster):
         depth = raster2.array
 
         Raster.__init__(self, file_name=file_name, band=band, raster_array=raster_array, geo_info=geo_info)
-
+        #Checks dimensions of arrays are the same
         if depth.shape[0] != vel.shape[0]:
             logging.error("ERROR:Rows not equal dimension depth is {0} vel is {1}"
                           .format(depth.shape[0]  ,vel.shape[0]))
@@ -52,7 +52,7 @@ class ValuesRaster(Raster):
 
 
                """
-        # Init loop
+        # Init parameters for loop
         self.array = np.zeros((depth.shape[0], depth.shape[1]))  # creates a zeroes array for the required size array
 
         #creates membership functions
@@ -90,12 +90,12 @@ class ValuesRaster(Raster):
         if includes_nan ==True:
 
             logging.warning("WARNING:Input data includes Nan values or no depth. Habitat set to zero in those locations")
-
+        #Plot options
         if plot_fuzzy_example:
             self. make_fuzzy_plot(fuzzy_parameters,fish_class,vel,depth)
 
 
-        return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
+        return self._make_raster("fuzz")  # self.array are replaced by HSI values and raster is called
 
     def make_fuzzy_plot(self,fuzzy_parameters,fish_class,vel,depth):
         """
