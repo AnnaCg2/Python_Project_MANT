@@ -46,7 +46,8 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
         # Creation of the buttons to show different .tif files based on lifestage and Fuzzy method.
         Createraster_label = Label(master, text="The buttons below create and display a .tiff file based on \n"
                                                 "Fuzzy method for the selected lifestage: \n"
-                                                "IMPORTANT: THIS FUNCTION TAKES A LONG TIME TO RUN - CLICK BUTTONS ONCE THEN WAIT")
+                                                "IMPORTANT: THIS FUNCTION TAKES A LONG TIME TO RUN - CLICK BUTTONS ONCE THEN WAIT \n"
+                                                "CLOSE THE GRAPHS TO SHOW .TIF FILE")
         Createraster_label.grid(column=1, row=7, columnspan=2, pady=10)
         map_button5 = tk.Button(master, text="Fry-FuzzyLogic",
                                 command=lambda: (open_smth(life_stage="fry", method="fuzzy_logic", canvas=canvas)))
