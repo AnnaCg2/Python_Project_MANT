@@ -103,9 +103,59 @@ Applies rules based on hydromorphological conditions (velocity and depth).
 | habitat_activation_md | numpy array | fuzzy membership values for medium habitat value |
 | habitat_activation_hi | numpy array | fuzzy membership values for high habitat value   |
 
+## raster_values.py
+Fuzzy logic class which initializes values from GeoTiffs and then runs fuzzy logic for all depth and velocity values. 
+It also initializes plotting of fuzzy logic example plot. Inherits Raster class. Class uses raster_hsi as a base template. 
+
+### \_\_init\_\_()
+Magic method assigns values to the class attributes when a new object is initiated. 
+Converts GeoTiffs into np.array for velocity and depth.
+Calls make_fuzzy_hsi
+
+
+
+| Input Argument | Type | Description |
+|----------------| -- | ---- |
+| file_name      | string | velocity GeoTiff file name including directory (must end on ".tif")  |
+| file_name2     | string | depth GeoTiff file name including directory (must end on ".tif") |
+| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| fish_class    | class object | rules class for specific fish |
+| plot_fuzzy_example    | Boolean | True or False if plot should be created |
+
+
+### make_fuzzy_hsi
+Loops over array using values from input array variables to run fuzzy logic for each data point, using fuzzy_logic.py
+Calls make_fuzzy_plots if plot_fuzzy_example is True
+
+
+| Input Argument | Type | Description |
+|----------------| -- | ---- |
+| vel      | np.array | velocity values array  |
+| depth    | np.array | depth values array|
+| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| fish_class    | class object | rules class for specific fish |
+| plot_fuzzy_example    | Boolean | True or False if plot should be created |
+
+
+| Return | Type | Description                                                    |
+| -- | --- |----------------------------------------------------------------|
+| make_raster("fuzz") | raster| returns by calling make_raster with np.array habitat values    |
+
+
+### make_fuzzy_plot
+Activates plotting of example fuzzy logic plot. Using plotting functions from fuzzylogic.py
+
+| Input Argument | Type | Description |
+|----------------| -- | ---- |
+| vel      | np.array | velocity values array  |
+| depth    | np.array | depth values array|
+| fuzzy_parameters | np.array | inputs for fuzzy logic parameters  |
+| fish_class    | class object | rules class for specific fish |
+
+
 ## fuzzlogic
 Perform fuzzy logic analysis and plot example triangle belonging functions and defuzzification
-
+Tipping skyfuzz example used as template for fuzzylogic https://pythonhosted.org/scikit-fuzzy/auto_examples/plot_tipping_problem.html
 ### plot_fuzzy
 Plots an example of the fuzzified curves for depth, velocity, and HSI parameters
 

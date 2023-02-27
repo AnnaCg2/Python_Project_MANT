@@ -36,12 +36,12 @@ class ValuesRaster(Raster):
 
 
 
-        self.make_hsi(vel, depth, fuzzy_parameters, fish_class, plot_fuzzy_example)
+        self.make_fuzzy_hsi(vel, depth, fuzzy_parameters, fish_class, plot_fuzzy_example)
 
 
 
 
-    def make_hsi(self, vel,depth,fuzzy_parameters, fish_class, plot_fuzzy_example):
+    def make_fuzzy_hsi(self, vel,depth,fuzzy_parameters, fish_class, plot_fuzzy_example):
         """
                A GeoTiff Raster dataset (wrapped osgeo.gdal. Dataset)
                :param vel: numpy array of velocity
@@ -92,12 +92,12 @@ class ValuesRaster(Raster):
             logging.warning("WARNING:Input data includes Nan values or no depth. Habitat set to zero in those locations")
 
         if plot_fuzzy_example:
-            self. make_fuzzyplot(fuzzy_parameters,fish_class,vel,depth)
+            self. make_fuzzy_plot(fuzzy_parameters,fish_class,vel,depth)
 
 
         return self._make_raster("fuzz")  # flow velocity or water depths in self.array are replaced by HSI values
 
-    def make_fuzzyplot(self,fuzzy_parameters,fish_class,vel,depth):
+    def make_fuzzy_plot(self,fuzzy_parameters,fish_class,vel,depth):
         """
                A GeoTiff Raster dataset (wrapped osgeo.gdal. Dataset)
                :param fuzzy_parameters np.array that dictates the fuzzy parameters
