@@ -110,7 +110,7 @@ class HsiApp(tk.Frame):  # Creates a class for the GUI, created by Murat
                     "depth": os.path.abspath("") + "\\basement\\water_depth.tif"}
             hsi_output_dir = os.path.abspath("") + "\\habitat\\"
 
-            plot_fuzzy_example = False
+            plot_fuzzy_example = True
 
             main(method, fish_file, tifs, hsi_output_dir, fuzzy_params, trout, parameters, life_stage,
                  plot_fuzzy_example)
