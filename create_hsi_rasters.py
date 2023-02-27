@@ -59,6 +59,17 @@ def get_hsi_raster(tif_dir, hsi_curve):
     """
     return HSIRaster(tif_dir, hsi_curve)
 def get_fuzzhsi_raster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class):
+    """
+        Calculate and return fuzzy logic Habitat Suitability Index Rasters
+        :param tif_dir: string of directory and name of  a tif file with parameter values velocity
+        :param tif_dir2: string of directory and name of  a tif file with parameter values depth
+        :param fuzzy_parameters np.array that dictates the fuzzy parameters
+        :param fish_class object of fish class
+        :return hsi_raster: Raster with HSI values
+
+        :return hsi_raster: Raster with fuzzy HSI values
+
+        """
 
     return ValuesRaster(tif_dir1,tif_dir2,fuzzy_paramters, fish_class)
 
@@ -115,3 +126,4 @@ if __name__ == '__main__':
     main(method,fish_file, tifs, hsi_output_dir, fuzzy_params,trout,parameters,life_stage, plot_fuzzy_example)
     t1 = perf_counter()
     print("Time elapsed: " + str(t1 - t0))
+
