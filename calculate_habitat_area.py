@@ -38,7 +38,7 @@ def calculate_habitat_area(layer, epsg):
     
 
 
-def main(chsi_ras_name, chsi_threshold_value):
+def main1(chsi_raster_name, chsi_threshold_value):
     """
     Calculate the usable physical habitat area based on a previously created chsi raster.
     Use the create_hsi_rasters.py script first to create a chsi raster.
@@ -67,9 +67,9 @@ def main(chsi_ras_name, chsi_threshold_value):
 ...
 
 
-if __name__ == '__main__':
+if __name__ == '__main1__':
     chsi_raster_name = os.path.abspath("") + "\\habitat\\chsi.tif"
     chsi_threshold = 0.4
 
     # launch main function
-    main(chsi_raster_name, chsi_threshold)
+    main1(chsi_raster_name, chsi_threshold)
