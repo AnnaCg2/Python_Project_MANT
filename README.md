@@ -35,6 +35,14 @@ The following data must be and is provided to run the code:
 2. The habitat Folder
    - trout.json
    - fuzzy_params.txt
+# Instructions to run the code 
+1. Run Gui.py to show all results and data
+2. Select method and life stage button
+3. Plots will appear if plot_fuzzy_example = True. 
+4. User must close plots before chsi.tif will display in canvas window 
+5. Corresponding chsi.tif will be displayed in canvas window 
+6. Next close the plots before clicking calculate habitat area 
+7. To display the graph change the boolean value plot_fuzzy_example in the create_hsi_raster main
 
 # Code Diagram
 ![](full_diagram.png)
@@ -60,7 +68,7 @@ This function was created partially with the help of chat gpt.
 ## gui.py
 
 #### HsiApp CLASS - AUTHOR: MURAT EGIN
-The gui.py contains a class that allows the user to show the habitat suitability of the fish for the selected lifestages. There is also a map widget of the selected river displayed to the right of where .tiff file is to allow visualization and comparison.
+The gui.py contains a class that allows the user to show the habitat suitability of the fish for the selected lifestages.
 HsiApp class initializes the tkinter frame utilizing self, master. The layout of the buttons are positioned utilizing the grid layout options. The buttons on the top left allow the user to select a fish lifestage and output the corresponding HSI values in the Python IDE. Below the canvas, the buttons selected allow the user to select the .tiff file that they want to display based on fish lifestage and method.
 Functions utilized:
 
