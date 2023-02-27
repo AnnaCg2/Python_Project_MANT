@@ -42,7 +42,8 @@ The following data must be and is provided to run the code:
 4. User must close plots before chsi.tif will display in canvas window 
 5. Corresponding chsi.tif will be displayed in canvas window 
 6. Next close the plots before clicking calculate habitat area 
-7. To display the graph change the boolean value plot_fuzzy_example in the create_hsi_raster main
+7. Calculated habitat area will appear in the results window
+8. To display the graph change the boolean value plot_fuzzy_example in the create_hsi_raster main
 
 # Code Diagram
 ![](full_diagram.png)
