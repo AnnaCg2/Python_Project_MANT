@@ -13,6 +13,8 @@ class ValuesRaster(Raster):
         :param fish_class object of fish class
         :plot_fuzzy_example Boolean true or false to initiate fuzz example plotting
         :param band: INT of the band number to use
+        :raster_array: np.array of raster
+        :geo_info: Bool of geo info
         Modified template from raster_hsi to use fuzzy logic
         """
         try:
