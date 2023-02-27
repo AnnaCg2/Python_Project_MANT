@@ -96,7 +96,7 @@ def plot_defuzzy(habitat, x_values, membership, aggregated, habitat_activation_v
     ax1.set_title('Aggregated membership and result (line)')
 
     # Turn off top/right axes
-    for ax in (ax0,ax1):
+    for ax in (ax0, ax1):
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.get_xaxis().tick_bottom()
@@ -170,6 +170,9 @@ def fuzzylogic(velocity_value, depth_value, fish_class, membership, x_values):
     :return aggregated: numpy array. Aggregates all three output membership functions together
     :return habitat_activation_values: numpy array. Fuzzy membership functions from rules
     :return habitat_activation: numpy array. Final degree of membership for graphing
+
+    Skyfuzz's tipping example used as template
+     https://pythonhosted.org/scikit-fuzzy/auto_examples/plot_tipping_problem.html
     """
     # Activation of our fuzzy membership functions at these values.
     # Saved in dictionary
@@ -177,10 +180,10 @@ def fuzzylogic(velocity_value, depth_value, fish_class, membership, x_values):
     fuzzy_velocity_dict = {}
     fuzzy_depth_dict = {}
     for par in param:
-        fuzzy_velocity_dict.update({par:fuzz.interp_membership(x_values["x_velocity"],
+        fuzzy_velocity_dict.update({par :fuzz.interp_membership(x_values["x_velocity"],
                                                                membership["velocity_membership"]["velocity_"+par],
                                                                velocity_value) })
-        fuzzy_depth_dict.update({par:fuzz.interp_membership(x_values["x_depth"],
+        fuzzy_depth_dict.update({par :fuzz.interp_membership(x_values["x_depth"],
                                                             membership["depth_membership"]["depth_"+par],
                                                             depth_value)})
 
