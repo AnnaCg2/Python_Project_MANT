@@ -134,4 +134,5 @@ if __name__ == '__main__':
     t0 = perf_counter()
     main(method, fish_file, tifs, hsi_output_dir, fuzzy_params, trout, parameters, life_stage, plot_fuzzy_example)
     t1 = perf_counter()
-    print("Time elapsed: " + str(t1 - t0))
+    logging.info("Time elapsed " + str(t1 - t0) +" seconds")
+
