@@ -91,11 +91,12 @@ def main(method,fish_file, tifs, hsi_output_dir, fuzzy_params, trout, parameters
                 eco_rasters.update({par: get_hsi_raster(tif_dir=tifs[par], hsi_curve=hsi_par_curve)})
                 eco_rasters[par].save(hsi_output_dir + "hsi_%s.tif" % par)
         elif method == "fuzzy_logic":
-
+            # creates fuzzy hsi raster using dictionary
             eco_rasters = {}
             eco_rasters.update({"fuzz_hsi": ValuesRaster(file_name=tifs["velocity"], file_name2=tifs["depth"], fuzzy_parameters=fuzzy_params, fish_class=trout, plot_fuzzy_example=plot_fuzzy_example)})
             eco_rasters["fuzz_hsi"].save(hsi_output_dir + "hsi_fuzzy.tif")
 
+        #creates Tif with Habitat values
         chsi_raster = combine_hsi_rasters(raster_list=list(eco_rasters.values()),
                                           method="geometric_mean")
         chsi_raster.save(hsi_output_dir + "chsi.tif")
