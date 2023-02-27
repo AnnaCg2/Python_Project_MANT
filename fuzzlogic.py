@@ -180,12 +180,12 @@ def fuzzylogic(velocity_value, depth_value, fish_class, membership, x_values):
     fuzzy_velocity_dict = {}
     fuzzy_depth_dict = {}
     for par in param:
-        fuzzy_velocity_dict.update({par :fuzz.interp_membership(x_values["x_velocity"],
-                                                               membership["velocity_membership"]["velocity_"+par],
-                                                               velocity_value) })
-        fuzzy_depth_dict.update({par :fuzz.interp_membership(x_values["x_depth"],
-                                                            membership["depth_membership"]["depth_"+par],
-                                                            depth_value)})
+        fuzzy_velocity_dict.update({par: fuzz.interp_membership(x_values["x_velocity"],
+                                                                membership["velocity_membership"]["velocity_"+par],
+                                                                velocity_value)})
+        fuzzy_depth_dict.update({par: fuzz.interp_membership(x_values["x_depth"],
+                                                             membership["depth_membership"]["depth_"+par],
+                                                             depth_value)})
 
     # call fish class to apply rules
     habitat_activation_lo, habitat_activation_md, habitat_activation_hi = \
@@ -204,6 +204,3 @@ def fuzzylogic(velocity_value, depth_value, fish_class, membership, x_values):
     habitat = fuzz.defuzz(x_values["x_habitat"], aggregated, 'centroid')
     habitat_activation = fuzz.interp_membership(x_values["x_habitat"], aggregated, habitat)
     return habitat, aggregated, habitat_activation_values, habitat_activation
-
-
-

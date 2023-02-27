@@ -37,8 +37,8 @@ The following data must be and is provided to run the code:
    - fuzzy_params.txt
 
 # Code Diagram
-![img_2.png](img_2.png)
-![img_1.png](img_1.png)
+![](full_diagram.png)
+![](clean_diagram.png)
 # Code Description
 
 ## config.py
@@ -57,11 +57,37 @@ This function was created partially with the help of chat gpt.
 | file_path | string | path to text file containing fuzzy parameters |
 | save_path | string | path to save .json file created from the text file |
 
+## gui.py
+
+#### HsiApp CLASS - AUTHOR: MURAT EGIN
+The gui.py contains a class that allows the user to show the habitat suitability of the fish for the selected lifestages. There is also a map widget of the selected river displayed to the right of where .tiff file is to allow visualization and comparison.
+HsiApp class initializes the tkinter frame utilizing self, master. The layout of the buttons are positioned utilizing the grid layout options. The buttons on the top left allow the user to select a fish lifestage and output the corresponding HSI values in the Python IDE. Below the canvas, the buttons selected allow the user to select the .tiff file that they want to display based on fish lifestage and method.
+Functions utilized:
+
+### Open_smth()
+Allows the user to open the .tiff file that is generated from the option that they select via the interface. Converts the .tif file to numpy array that allows tkinter to show the image.
+
+| Input argument | Type	   | Description |
+|----------------|---------| ----|
+| Life_stage	    | String	 | User input lifestage for desired .tif creation and area calculation |
+| Method	        | String	 | User input to select method that is run that defines the created raster |
+| Canvas	        | string  | 	predefined area that receives the image that is generated from the chsi.tif |
+
+
+## Raster_Creation()
+Button linked function that allows the user to create a chsi.tif based on HSI method and life_stage
+
+|Input argument	| Type    |	Description |
+| --- |---------| --- |
+| life_stage | 	string |	User input lifestage for desired .tif creation and area calculation |
+| Method	| string	 | User input to select method that is run that defines the created raster |
+
 
 ## make_rules.py
 File where the Fish class is stored. This class contains the fuzzy rules used to determine the relationship between the
 input variables (velocity and depth) and the output variable (HSI value).
 
+### FISH CLASS -- AUTHOR: ANNA CERF
 ### \_\_init\_\_()
 Magic method assigns values to the class attributes when a new object is initiated.
 
@@ -106,6 +132,8 @@ Applies rules based on hydromorphological conditions (velocity and depth).
 ## raster_values.py
 Fuzzy logic class which initializes values from GeoTiffs and then runs fuzzy logic for all depth and velocity values. 
 It also initializes plotting of fuzzy logic example plot. Inherits Raster class. Class uses raster_hsi as a base template. 
+
+### RasterValues(Raster) - AUTHOR: NIKLAS HENNING
 
 ### \_\_init\_\_()
 Magic method assigns values to the class attributes when a new object is initiated. 
@@ -223,12 +251,20 @@ Extract fuzzy parameter information from txt file and save as .json
 | habitat_activation_values | numpy array | Final degree of membership for graphing                                    |
 | habitat_activation | numpy array    | Final degree of membership for graphing                                    |
 
-## Auxilary Components
+## Auxiliary Components
 
 1. Class inheritance from Raster class to RasterValues
 2. Two plotting functions enabled/disabled by boolean (plot_fuzzy and plot_defuzzy)
 3. Warning, notes, and errors logged throughout the code
-   - warning to close plots before running calculate_habitat_area
+   - create_hsi_raster:
+     - logging info in main
+     - logging warning in main
+     - logging info in main (timer)
+   - raster_values
+     - logging error x3 in __init__
+     - logging warning in make_fuzzy_hsi
+     - logging warning in make_fuzzy_plot
+4. Implemented GUI
 
 
 -----------------------------------------------------------
