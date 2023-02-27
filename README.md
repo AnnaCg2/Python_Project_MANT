@@ -5,7 +5,7 @@
 
 ***
 
-## Introduction:
+# Introduction:
 > This project is an extension of Exercise 5 from the Hydro-Informatics textbook (Schwindt & Barros, 2007). Throughout 
 > stages of their life, aquatic animals, including fish, require different habitat conditions in order to thrive. 
 > These habitat conditions include hydraulic parameters such as water depth and flow velocity. Based on these factors a 
@@ -18,12 +18,14 @@
 >>*Note: This README.md file contains descriptions of all functions written or altered by the MANT team. To find 
 > additional information about the scripts created for the Habitat Suitability Exercise and called here (but not edited by our team) please visit the Hydro-Informatics textbook at
 > https://hydro-informatics.com/exercises/ex-geco.html
-## Requirements
+# Requirements
 
-### Libraries
-Libraries used: os, logging, random, shutil, string, numpy, pandas, json, skuzzy, matplotlib.pyplot, geotools
+## Libraries
+_Python Libraries:_ geoutils, numpy, pandas, json, skfuzzy, matplotlib.pyplot, geotools
 
-### Input Data
+_Standard Libraries:_ os, logging, random, shutil, string
+
+## Input Data
 
 The following data must be and is provided to run the code:
 
@@ -36,21 +38,97 @@ The following data must be and is provided to run the code:
    - trout.json
    - fuzzy_params.txt
 
-## Code Diagram
+# Code Diagram
 
-## Code Description
+# Code Description
 
-> ### config.py
-> All libraries and global variables that are needed are loaded here. 
+## config.py
+All libraries and global variables that are needed are loaded here. The skfuzzy and matplotlib.pyplot packages 
+were added in addition to the already existing libraries from Exercise 5.
 
-> ### fun.py
+## fun.py
+File where basic functions that are called throughout the script are written.
 
-> ### make_rules.py
-> File where the Fish class is stored. This class contains the fuzzy rules used to determine the relationship between the
-> input variables (velocity and depth) and the output variable (HSI value).
-> #### \_\_init\_\_()
-> Magic method assigns values to the class attributes when a new object is initiated.
-> 
+### txt_to_json
+Reads data from .txt file and loads into and saves .json file.
+This function was created partially with the help of chat gpt. 
+
+| Input Argument | Type | Description |
+| --- | --- | --- |
+| file_path | string | path to text file containing fuzzy parameters |
+| save_path | string | path to save .json file created from the text file |
+
+
+## make_rules.py
+File where the Fish class is stored. This class contains the fuzzy rules used to determine the relationship between the
+input variables (velocity and depth) and the output variable (HSI value).
+
+### \_\_init\_\_()
+Magic method assigns values to the class attributes when a new object is initiated.
+
+| Input Argument | Type | Description |
+| --- | --- | --- |
+| common_name | string | common name of fish species being analyzed |
+| life_stage | string | life stage of fish to be analyzed for habitat suitability. Must be "fry", "juvenile", "adult", or "spawning"
+
+
+### make_fuzzy_rules
+Establish rules for fuzzification based on velocity and depth characteristics
+
+| Input Argument | Type | Description |
+| --- | --- | --- |
+| life_stage | string | life stage of fish to be analyzed for habitat suitability |
+| habitat_trimf | pd dataframe | results for habitat skfuz triangular membership function generator |
+| fuzzy_velocity | dictionary | contains low, medium, and high fuzzy velocity membership |
+| fuzzy_depth | dictionary | contains low, medium, and high fuzzy depth membership |
+
+| Return | Type | Description                                                    |
+| --- | --- |----------------------------------------------------------------|
+| active_rule1 | numpy array | first active rule. To be associated with low habitat value     |
+| active_rule2 | numpy array | second active rule. To be associated with medium habitat value |
+| active_rule3 | numpy array | third active rule. To be associated with hi habitat value |
+
+### apply_rules
+Applies rules based on hydromorphological conditions (velocity and depth).
+
+| Input Value  | Type          | Description                                                    |
+|--------------|---------------|----------------------------------------------------------------|
+| active_rule1 | numpy array   | first active rule. To be associated with low habitat value     |
+| active_rule2 | numpy array   | second active rule. To be associated with medium habitat value |
+| active_rule3 | numpy array   | third active rule. To be associated with hi habitat value |
+| habitat_trimf | pd data frame | results for habitat skfuz triangular membership function generator |
+
+| Return                | Type | Description                                      |
+|-----------------------| --- |--------------------------------------------------|
+| habitat_activation_lo | numpy array | fuzzy membership values for low habitat value    |
+| habitat_activation_md | numpy array | fuzzy membership values for medium habitat value |
+| habitat_activation_hi | numpy array | fuzzy membership values for high habitat value   |
+
+## fuzzlogic
+Perform fuzzy logic analysis and plot example triangle belonging functions and defuzzification
+
+### plot_fuzzy
+Plots an example of the fuzzified curves for depth, velocity, and HSI parameters
+
+| Input Value  | Type          | Description   |
+|--------------|---------------|----------------|
+| x_values | dictionary | dictionary with velocity, depth, and habitat values stored as numpy arrays.
+| membership | dictionary | dictionary with fuzzy membershi8p functions as pandas dataframes |
+
+ Return                | Type | Description                                      |
+|-----------------------| --- |--------------------------------------------------|
+| fig | plot | plot depicting fuzzy membership functions |
+
+### plot_defuzzy
+
+ Input Value  | Type          | Description   |
+|--------------|---------------|----------------|
+| habitat | numpy.float 64 | final defuzzified habitat suitability index value |
+|
+
+
+
+
 
 
 

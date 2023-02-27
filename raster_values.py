@@ -30,14 +30,14 @@ class ValuesRaster(Raster):
         if depth.shape[1] != vel.shape[1]:
             logging.error("ERROR:Columns not equal dimension depth is {0} vel is {1}".format(depth.shape[1], vel.shape[1]))
 
-        self.make_hsi(vel,depth, fuzzy_parameters, fish_class, plot_fuzzy_example)
+        self.make_hsi(vel, depth, fuzzy_parameters, fish_class, plot_fuzzy_example)
 
 
 
     def make_hsi(self, vel,depth,fuzzy_parameters, fish_class, plot_fuzzy_example):
         self.array = np.zeros((depth.shape[0], depth.shape[1])) #creates a zeroes array for the required size array
         (membership, x_values) = create_membership_functions(fuzzy_parameters)
-        percent_old=0
+        percent_old = 0
 
         for x in range(depth.shape[0]): #loops over rows
 
@@ -54,6 +54,7 @@ class ValuesRaster(Raster):
 
                     (self.array[x, y], aggregated, habitat_activation_values, habitat_activation) \
                         = fuzzylogic(vel[x, y], depth[x, y], fish_class, membership, x_values)
+
 
 
             if percent_new > percent_old:
